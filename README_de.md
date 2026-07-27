@@ -39,6 +39,9 @@ doas xbps-install qt6-base qt6-webengine qt6-declarative qt6-webchannel qt6-posi
 sudo apt install qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzip zenity
 
 # Arch
+# NixOS (Flake)
+# Zu deiner flake.nix in inputs hinzufugen:
+#   sunshine-launcher.url = "github:Ars-byte/Sunshine-launcher";
 sudo pacman -S qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzip zenity
 ```
 

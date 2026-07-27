@@ -41,6 +41,10 @@ sudo apt install qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip un
 
 # Arch
 sudo pacman -S qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzip zenity
+
+# NixOS (flake)
+# Add to your flake.nix inputs:
+#   sunshine-launcher.url = "github:Ars-byte/Sunshine-launcher";
 ```
 
 ---
@@ -60,12 +64,26 @@ sudo pacman -S qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzi
 ### From Source
 
 ```bash
-git clone https://github.com/Ars-Byte/SunshineLauncher.git
-cd SunshineLauncher
+git clone https://github.com/Ars-byte/Sunshine-launcher.git
+cd Sunshine-launcher
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ./run.sh
+```
+
+### NixOS
+
+```bash
+# Add to flake.nix inputs
+sunshine-launcher.url = "github:Ars-byte/Sunshine-launcher";
+
+# Add to systemPackages
+inputs.sunshine-launcher.packages.${system}.default
+
+# Rebuild
+sudo nixos-rebuild switch
+sunshine-launcher
 ```
 
 ---
