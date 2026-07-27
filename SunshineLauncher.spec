@@ -47,10 +47,9 @@ my_datas = [
     ('Docs', 'Docs'),
 ]
 
-datas = my_datas + PYSIDE_INIT + pil_data + pp_data
-binaries = pil_bin + pp_bin
-hiddenimports = (NEEDED_PYSIDE_MODULES
-                 + pil_imports + pp_imports)
+datas = my_datas + PYSIDE_INIT + pil_data
+binaries = pil_bin
+hiddenimports = NEEDED_PYSIDE_MODULES + pil_imports
 
 a = Analysis(
     ['src/main.py'],
