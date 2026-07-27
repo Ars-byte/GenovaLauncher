@@ -1,5 +1,8 @@
 # SunshineLauncher
 
+
+> Website: [ars-byte.github.io/sunshine-website](https://ars-byte.github.io/sunshine-website/)
+
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![PySide6](https://img.shields.io/badge/UI-PySide6-green?style=flat-square&logo=qt&logoColor=white)](https://www.qt.io/qt-for-python)
 [![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://www.kernel.org/)
