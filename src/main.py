@@ -2,7 +2,7 @@ import sys
 import os
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QTimer
-from src.gui.main_window import PYmcApp
+from src.gui.main_window import GenovaLauncherApp
 from src.gui.test_window import TestWindow
 from src.gui.setup_wizard import SetupWizard
 from src import constants as c
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     ui_scale = "1.0"
     try:
         import json
-        # Determine config path (simplified version of PYmcApp logic)
+        # Determine config path (simplified version of GenovaLauncherApp logic)
         home = os.path.expanduser("~")
         if is_running_in_flatpak():
             fid = get_flatpak_app_id() or c.DEFAULT_FLATPAK_ID
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         sys.exit(app.exec())
 
     # Create app instance (this loads config)
-    window = PYmcApp(launcher_path=launcher_path, force_flatpak_ui=force_flatpak_ui, force_nvidia_ui=force_nvidia_ui)
+    window = GenovaLauncherApp(launcher_path=launcher_path, force_flatpak_ui=force_flatpak_ui, force_nvidia_ui=force_nvidia_ui)
 
     # --- Factory Reset Argument ---
     if "--factory-reset" in sys.argv:

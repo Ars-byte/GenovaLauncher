@@ -1,4 +1,4 @@
-"""Shared theming utilities for PYmc.
+"""Shared theming utilities for GenovaLauncher.
 
 When qt6ct is active the application palette is loaded from the user's
 noctalia color scheme.  All dialogs should inherit their colors from

@@ -453,8 +453,8 @@ class SettingsTab(QWidget):
 
         # JSON Theme Preset
         self.combo_preset = QComboBox()
-        from src.gui.main_window import PYmcApp
-        for pid, pname in PYmcApp.get_available_themes():
+        from src.gui.main_window import GenovaLauncherApp
+        for pid, pname in GenovaLauncherApp.get_available_themes():
             self.combo_preset.addItem(pname, pid)
         current_preset = self.app.config.get(c.CONFIG_KEY_COLOR_THEME, "default")
         idx = self.combo_preset.findData(current_preset)

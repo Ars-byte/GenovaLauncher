@@ -36,7 +36,7 @@ class VisualLabel(QLabel):
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
         self.setStyleSheet("background: transparent; border: none;")
 
-class PYmcApp(QMainWindow):
+class GenovaLauncherApp(QMainWindow):
     """Main application window managing tabs, theming, and top-level logic."""
     def __init__(self, launcher_path=".", force_flatpak_ui=False, force_nvidia_ui=False):
         super().__init__()
@@ -499,7 +499,7 @@ class PYmcApp(QMainWindow):
 
         # Arrow pixmap for ComboBox
         arrow_size = 12
-        arrow_path = os.path.join(c.HOME_DIR, ".local", "share", "pymc", "combo_arrow.png")
+        arrow_path = os.path.join(c.HOME_DIR, ".local", "share", "genovalauncher", "combo_arrow.png")
         os.makedirs(os.path.dirname(arrow_path), exist_ok=True)
         arrow_pixmap = QPixmap(arrow_size, arrow_size)
         arrow_pixmap.fill(Qt.GlobalColor.transparent)
