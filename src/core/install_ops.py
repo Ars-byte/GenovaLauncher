@@ -301,6 +301,10 @@ def select_version(app, version):
 
     for v, card in app.version_cards.items():
         if v == version:
-            card.setStyleSheet(f"border: 2px solid {accent}; background-color: {hex_to_rgba(accent, 0.08)};")
+            card.setProperty("selected", True)
+            card.style().unpolish(card)
+            card.style().polish(card)
         else:
-            card.setStyleSheet("border: 1px solid transparent;")
+            card.setProperty("selected", False)
+            card.style().unpolish(card)
+            card.style().polish(card)

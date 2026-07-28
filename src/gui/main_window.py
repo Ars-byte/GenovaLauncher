@@ -748,8 +748,12 @@ class PYmcApp(QMainWindow):
                 border: 1px solid {hex_to_rgba(input_border, 0.08)};
                 background-color: {frame_bg_opaque};
             }}
-            #PlayTab QFrame#GroupFrame, #PlayTab QFrame#VersionCard {{
+            #PlayTab QFrame#GroupFrame, #PlayTab             QFrame#VersionCard {{
                 background-color: {frame_bg_opaque};
+            }}
+            QFrame#VersionCard[selected="true"] {{
+                border: 2px solid {accent};
+                background-color: {hex_to_rgba(accent, 0.08)};
             }}
             #ToolsTab QFrame#GroupFrame {{
                 background-color: transparent;
