@@ -94,7 +94,7 @@ class PYmcApp(QMainWindow):
         except (ValueError, AttributeError) as e:
             logger.debug(f"Invalid window size '{size_str}', using default: {e}")
             self.resize(900, 700)
-        self.setMinimumSize(800, 600)
+        self.setMinimumSize(500, 400)
 
         self.setWindowIcon(ImageManager.get_icon("icon.png"))
 
