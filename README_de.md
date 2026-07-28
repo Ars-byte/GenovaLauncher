@@ -1,3 +1,5 @@
+<img src="icon.png" width="64" align="right" />
+
 # PYmc
 
 

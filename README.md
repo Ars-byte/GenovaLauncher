@@ -1,3 +1,5 @@
+<img src="icon.png" width="64" align="right" />
+
 # PYmc
 
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
