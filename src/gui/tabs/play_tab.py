@@ -148,3 +148,4 @@ class PlayTab(QWidget):
     @property
     def version_listbox(self):
         return self.version_list_widget
+

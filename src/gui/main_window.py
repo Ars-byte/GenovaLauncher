@@ -208,21 +208,16 @@ class SunshineLauncherApp(QMainWindow):
         self.update_sticker_visibility(index)
 
     def _on_lang_menu_triggered(self, action):
-        """Handle language selector menu click — switch language and reload UI."""
+        """Handle language selector menu click — save, then restart launcher."""
         lang_code = action.data()
         if not lang_code:
             return
         self.config[c.CONFIG_KEY_LANGUAGE] = lang_code
         self.config_manager.save_config()
-        language_manager.load_language(lang_code)
-        # Reload window title and tab labels
-        self.setWindowTitle(c.t("UI_TITLE_VERSION"))
-        self.tab_widget.setTabText(0, c.t("UI_TAB_PLAY"))
-        self.tab_widget.setTabText(1, c.t("UI_TAB_TOOLS"))
-        self.tab_widget.setTabText(2, c.t("UI_TAB_SETTINGS"))
-        self.tab_widget.setTabText(3, c.t("UI_TAB_ABOUT"))
-        # Update button text
-        self._lang_btn.setText(lang_code.upper())
+        # Restart the app to apply new language
+        import sys, os
+        QApplication.quit()
+        os.execv(sys.executable, [sys.executable] + sys.argv)
 
     def update_background(self):
         """Update the background image position, zoom, and opacity from config."""

@@ -268,4 +268,3 @@ class ToolsTab(QWidget):
                 self.lbl_shader_status = QLabel("...")
                 self.lbl_shader_status.setObjectName("SubtitleLabel")
                 grid.addWidget(self.lbl_shader_status, (i // 3) + 1, i % 3)
-                self.app.logic.update_shader_status_label(self.app)
