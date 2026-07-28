@@ -918,26 +918,6 @@ def launch_game(app):
         if app.config.get(c.CONFIG_KEY_ZINK_MODE):
             extra_env["MESA_LOADER_DRIVER_OVERRIDE"] = "zink"
 
-    # ── Performance optimizations ──
-    # Mesa threaded GL dispatch — significant FPS boost on Intel iGPUs
-    if "mesa_glthread" not in env:
-        env["mesa_glthread"] = "true"
-    # Shader cache: avoid recompilation on every launch
-    cache_dir = os.path.join(os.path.expanduser("~"), ".cache", "sunshine-shaders")
-    os.makedirs(cache_dir, exist_ok=True)
-    env.setdefault("MESA_SHADER_CACHE_DIR", cache_dir)
-    env.setdefault("MESA_GLSL_CACHE_DIR", cache_dir)
-    env.setdefault("MESA_SHADER_CACHE_MAX_SIZE", "536870912")  # 512 MB
-    # Intel ANV Vulkan sparse memory support
-    if "ANV_SPARSE" not in env:
-        env["ANV_SPARSE"] = "1"
-    # Skip GL error checking in release builds
-    if "MESA_NO_ERROR" not in env:
-        env["MESA_NO_ERROR"] = "1"
-    # Use Vulkan for compositing when available (better Wayland perf)
-    env.setdefault("GDK_BACKEND", "wayland,x11")
-    env.setdefault("QT_QPA_PLATFORM", "wayland;xcb")
-
     is_flatpak_run = "flatpak" in cmd and "run" in cmd
     fs_path = shutil.which("flatpak-spawn")
     is_flatpak_spawn_host = (
@@ -994,13 +974,6 @@ def launch_game(app):
                 launched = True
 
         if not launched:
-            # ── RAM limit: prevent game from saturating system memory ──
-            prlimit = shutil.which("prlimit")
-            mem_limit_mb = int(app.config.get("memory_limit_mb", 4096))
-            if prlimit and mem_limit_mb > 0:
-                cmd = [prlimit, f"--as={mem_limit_mb * 1024 * 1024}"] + cmd
-                logger.info(f"Memory limit set: {mem_limit_mb} MB")
-
             game_fh = logger.open_game_output("a")
             if game_fh:
                 ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
