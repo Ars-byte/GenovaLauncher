@@ -744,11 +744,8 @@ class PYmcApp(QMainWindow):
             QFrame#ToolCard:hover {{
                 border: 1px solid {hex_to_rgba(accent, 0.25)};
             }}
-            QFrame#GroupFrame {{
-                border: 1px solid {hex_to_rgba(input_border, 0.2)};
-                background-color: {frame_bg_opaque};
-            }}
-            QFrame#VersionCard {{
+            QFrame#GroupFrame, QFrame#VersionCard {{
+                border: 1px solid {hex_to_rgba(input_border, 0.08)};
                 background-color: {frame_bg_opaque};
             }}
             #PlayTab QFrame#GroupFrame, #PlayTab QFrame#VersionCard {{
