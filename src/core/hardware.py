@@ -210,7 +210,7 @@ def show_hw_results(app, txt):
     log_files = []
     if os.path.isdir(log_dir):
         for f in os.listdir(log_dir):
-            if f.startswith("sunshinelauncher-") and f.endswith(".log"):
+            if f.startswith("pymc-") and f.endswith(".log"):
                 log_files.append(f)
         log_files.sort(reverse=True)
     for f in log_files:

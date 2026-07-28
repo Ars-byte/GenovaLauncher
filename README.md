@@ -1,4 +1,4 @@
-# SunshineLauncher
+# PYmc
 
 
 > Website: [ars-byte.github.io/sunshine-website](https://ars-byte.github.io/sunshine-website/)
@@ -47,7 +47,7 @@ sudo pacman -S qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzi
 
 # NixOS (flake)
 # Add to your flake.nix inputs:
-#   sunshine-launcher.url = "github:Ars-byte/Sunshine-launcher";
+#   pymc.url = "github:Ars-byte/Sunshine-launcher";
 ```
 
 ---
@@ -58,19 +58,19 @@ sudo pacman -S qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzi
 
 ```bash
 # Download the .xbps from Releases, then:
-xbps-rindex -a sunshine-launcher-1.0.0_1.x86_64.xbps
-doas xbps-install -R $PWD sunshine-launcher
-sunshine-launcher
+xbps-rindex -a pymc-1.0.0_1.x86_64.xbps
+doas xbps-install -R $PWD pymc
+pymc
 ```
 
 ### Portable Release
 
-1. Download the latest `SunshineLauncher-v*.tar.gz` from [Releases](https://github.com/Ars-Byte/SunshineLauncher/releases)
+1. Download the latest `PYmc-v*.tar.gz` from [Releases](https://github.com/Ars-Byte/PYmc/releases)
 2. Extract to any directory
 3. Run:
 
 ```bash
-./SunshineLauncher.sh
+./PYmc.sh
 ```
 
 ### From Source
@@ -88,14 +88,14 @@ pip install -r requirements.txt
 
 ```bash
 # Add to flake.nix inputs
-sunshine-launcher.url = "github:Ars-byte/Sunshine-launcher";
+pymc.url = "github:Ars-byte/Sunshine-launcher";
 
 # Add to systemPackages
-inputs.sunshine-launcher.packages.${system}.default
+inputs.pymc.packages.${system}.default
 
 # Rebuild
 sudo nixos-rebuild switch
-sunshine-launcher
+pymc
 ```
 
 ---

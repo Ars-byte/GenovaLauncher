@@ -1,11 +1,11 @@
-# 📘 MANUAL DE USO - SunshineLauncher v3.1
+# 📘 MANUAL DE USO - PYmc v3.1
 
 **Versión:** 3.1
 
 ---
 
 ## 🌟 1. Introducción
-**SunshineLauncher** es una interfaz gráfica para gestionar Minecraft: Bedrock Edition en Linux. Trabaja con los binarios del proyecto **MCPELauncher-manifest** para instalar, lanzar y personalizar el juego.
+**PYmc** es una interfaz gráfica para gestionar Minecraft: Bedrock Edition en Linux. Trabaja con los binarios del proyecto **MCPELauncher-manifest** para instalar, lanzar y personalizar el juego.
 
 Migrado a **PySide6 (Qt6)** desde la versión 3.0, ofrece una interfaz fluida con soporte HiDPI, temas, fondos personalizados y traducción a 7 idiomas.
 
@@ -22,12 +22,12 @@ Migrado a **PySide6 (Qt6)** desde la versión 3.0, ofrece una interfaz fluida co
 
 **Repositorio (actualizaciones automáticas):**
 ```bash
-flatpak install --user SunshineLauncher org.sunshine.Launcher
+flatpak install --user PYmc com.pymc.Launcher
 ```
 
 **Bundle:**
 ```bash
-flatpak install --user SunshineLauncher.flatpak
+flatpak install --user PYmc.flatpak
 ```
 
 **Runtums necesarios:**
@@ -36,9 +36,9 @@ flatpak install org.kde.Platform//6.10 io.qt.qtwebengine.BaseApp//6.10
 ```
 
 ### Versión portátil
-Descarga `SunshineLauncher-vX.Y.tar.gz` de **Releases**, extrae y coloca los binarios de MCPELauncher en `bin/`. Ejecuta:
+Descarga `PYmc-vX.Y.tar.gz` de **Releases**, extrae y coloca los binarios de MCPELauncher en `bin/`. Ejecuta:
 ```bash
-./SunshineLauncher.sh
+./PYmc.sh
 ```
 
 ### Desde código fuente

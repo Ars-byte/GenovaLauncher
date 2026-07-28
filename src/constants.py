@@ -60,7 +60,7 @@ DEPENDENCY_MAP = {
 import os
 
 # --- Información de la Aplicación ---
-APP_NAME = "SunshineLauncher"
+APP_NAME = "PYmc"
 VERSION_LAUNCHER = "1.0.0"
 BINARY_VERSION_INFO = "v1.7.4-official"  # Default for Flatpak or if not found
 BINARY_VERSION_FALLBACK = "PreCompiled Binaries from mcpelauncher Github"
@@ -103,7 +103,7 @@ FLATPAK_REQUIRED_RUNTIMES = [
 # --- Rutas y Nombres de Archivos ---
 HOME_DIR = os.path.expanduser("~")
 FLATPAK_INFO_FILE = "/.flatpak-info"
-DEFAULT_FLATPAK_ID = "com.sunshine.Launcher"
+DEFAULT_FLATPAK_ID = "com.pymc.Launcher"
 MCPELAUNCHER_FLATPAK_ID = "com.mcpelauncher.MCPELauncher"
 
 # Rutas de datos (sin modificar la estructura existente)
@@ -112,7 +112,7 @@ MCPELAUNCHER_DATA_SUBDIR = "data/mcpelauncher"
 LOCAL_SHARE_DIR = ".local/share/mcpelauncher"
 
 # Nombres de archivos de configuración
-CONFIG_FILE_NAME = "sunshinelauncher-config.json"
+CONFIG_FILE_NAME = "pymc-config.json"
 OLD_CONFIG_FILE_NAME = "config.json"
 
 # Nombres de directorios
@@ -127,7 +127,7 @@ MINECRAFT_PE_DIR_ALT = "games/com.mojang/minecraftpe"
 OPTIONS_FILE = "options.txt"
 BACKUP_DIR = "MCPELauncher-OLD"
 APPLICATIONS_DIR = ".local/share/applications"
-DESKTOP_SHORTCUT_NAME = "sunshine-launcher.desktop"
+DESKTOP_SHORTCUT_NAME = "pymc.desktop"
 
 
 
@@ -175,7 +175,7 @@ THEME_COLOR_MAP = {
 VERSION_MANIFEST_URL = "https://raw.githubusercontent.com/Ars-Byte/mcpelauncher-versiondb/master/versions.{arch}.json.min"
 
 # ── Update checker ──
-UPDATE_CHECK_URL = "https://ars-byte.github.io/SunshineLauncher/version.json"
+UPDATE_CHECK_URL = "https://ars-byte.github.io/PYmc/version.json"
 UPDATE_CHECK_INTERVAL = 86400  # 24h between automatic checks
 VERSION_WARNINGS_URL = "https://raw.githubusercontent.com/Ars-Byte/mcpelauncher-versiondb/master/version-warnings.json"
 

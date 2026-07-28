@@ -32,9 +32,9 @@ class Logger:
                 log_dir = "." # Fallback
 
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        log_file = os.path.join(log_dir, f"sunshinelauncher-{timestamp}.log")
+        log_file = os.path.join(log_dir, f"pymc-{timestamp}.log")
         
-        self.logger = logging.getLogger("SunshineLauncher")
+        self.logger = logging.getLogger("PYmc")
         self.logger.setLevel(logging.DEBUG)
         
         # File handler (UTF-8 to support all chars)
@@ -59,7 +59,7 @@ class Logger:
         self.log_system_info()
 
     def log_system_info(self):
-        self.info(f"=== SunshineLauncher v{c.VERSION_LAUNCHER} SESSION START ===")
+        self.info(f"=== PYmc v{c.VERSION_LAUNCHER} SESSION START ===")
         self.info(f"OS: {platform.system()} {platform.release()} ({platform.version()})")
         
         # Distro info if on Linux

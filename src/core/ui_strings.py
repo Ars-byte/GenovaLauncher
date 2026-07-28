@@ -10,7 +10,7 @@ from .values import (
 )
 
 UI_SETUP_WIZARD_TITLE = "Asistente de Configuración Inicial"
-UI_SETUP_WELCOME_TITLE = "Bienvenidos a SunshineLauncher v{VERSION_LAUNCHER}"
+UI_SETUP_WELCOME_TITLE = "Bienvenidos a PYmc v{VERSION_LAUNCHER}"
 UI_SETUP_WELCOME_SUB = "Gracias por elegir esta herramienta para gestionar tu experiencia en Minecraft Bedrock."
 UI_SETUP_LANG_TITLE = "Selecciona tu Idioma"
 UI_SETUP_APPEARANCE_TITLE = "Personaliza tu Estilo"
@@ -19,7 +19,7 @@ UI_SETUP_LEGAL_CHECK = "He leído y acepto la licencia y los términos de uso"
 UI_SETUP_MIGRATION_TITLE = "¿Deseas migrar tus datos?"
 UI_SETUP_MIGRATION_SUB = "Si utilizabas MCPETool u otro launcher diferente, puedes traer tus mundos y versiones de forma sencilla."
 UI_SETUP_FINISH_TITLE = "Primeros Pasos y Agradecimientos"
-UI_SETUP_FINISH_SUB = """¡Muchas gracias por elegir SunshineLauncher v{VERSION_LAUNCHER}!
+UI_SETUP_FINISH_SUB = """¡Muchas gracias por elegir PYmc v{VERSION_LAUNCHER}!
 
 Este proyecto ha sido desarrollado con dedicación para ofrecerte la mejor experiencia en Linux. Aquí tienes un pequeño resumen de lo que puedes hacer:
 
@@ -296,7 +296,7 @@ UI_VERIFYING_PACKAGES_LABEL = "{title} {count} paquetes..."
 UI_INCOMPATIBLE_TEXT = "Incompatible"
 UI_VERSION_TEXT = "Versión: "
 UI_SHADER_STATUS_LABEL = "Estado Shaders: {status}"
-UI_TRAY_SHOW = "Mostrar SunshineLauncher"
+UI_TRAY_SHOW = "Mostrar PYmc"
 UI_TRAY_QUIT = "Salir"
 UI_GAME_CONFIG_TITLE = "Configurador de Juego"
 UI_TAB_VISUAL = "Interfaz Visual"
@@ -651,5 +651,5 @@ UI_MOD_NOT_INSTALLED = "No instalado"
 UI_BUTTON_INSTALL_MOD = "Instalar"
 
 # ── Update checker ──
-UI_UPDATE_AVAILABLE = "Versión {version} disponible. Actualiza SunshineLauncher para obtener las novedades."
+UI_UPDATE_AVAILABLE = "Versión {version} disponible. Actualiza PYmc para obtener las novedades."
 

@@ -5,7 +5,7 @@
 ---
 
 ## 1. Naturaleza del Proyecto
-**SunshineLauncher** es una herramienta de código abierto desarrollada con fines educativos y de utilidad para la comunidad de Minecraft Bedrock en Linux.
+**PYmc** es una herramienta de código abierto desarrollada con fines educativos y de utilidad para la comunidad de Minecraft Bedrock en Linux.
 
 * **Desarrollo Asistido por IA:** Esta herramienta ha sido desarrollada con la asistencia de un agente de Inteligencia Artificial avanzado.
 
@@ -14,17 +14,17 @@ Este "launcher" solo funciona de forma independiente en su apartado visual pero 
 
 * **MCPELauncher-Manifest:** Proyecto base en el que se fundamenta (Créditos a **ChristopherHX** y **MCMrARM**).
 
-**SunshineLauncher** hace uso de componentes del ecosistema mcpelauncher, incluyendo:
+**PYmc** hace uso de componentes del ecosistema mcpelauncher, incluyendo:
 * **Google Play API:** Utilizada para la autenticación y descarga de archivos APK oficiales (vía `playdl-signin-ui-qt` y `gplaydl`).
 * **VersionDB:** Repositorio de base de datos de versiones utilizado para consultar las actualizaciones oficiales.
 
-**SunshineLauncher** no busca reemplazar, competir ni apropiarse del crédito del proyecto mencionado anteriormente ni ningún otro launcher que cumpla su misma función. Su único propósito es facilitar la gestión de versiones y procesos para los usuarios de dicho manifest sin pretender ser el soporte oficial del proyecto.
+**PYmc** no busca reemplazar, competir ni apropiarse del crédito del proyecto mencionado anteriormente ni ningún otro launcher que cumpla su misma función. Su único propósito es facilitar la gestión de versiones y procesos para los usuarios de dicho manifest sin pretender ser el soporte oficial del proyecto.
 
-**Minecraft** es una marca registrada de Mojang AB. **SunshineLauncher** no está afiliado, asociado, autorizado, respaldado ni conectado oficialmente de ninguna manera con Microsoft Corporation, Mojang AB, o cualquiera de sus subsidiarias o afiliadas.
+**Minecraft** es una marca registrada de Mojang AB. **PYmc** no está afiliado, asociado, autorizado, respaldado ni conectado oficialmente de ninguna manera con Microsoft Corporation, Mojang AB, o cualquiera de sus subsidiarias o afiliadas.
 
-El proyecto **CCMC Launcher** por CrowRei34, en el cual se basaba la versión anterior (v1.0, v1.1 y v1.2) de la herramienta **MCPETool** (Ahora llamada **SunshineLauncher**) se considera actualmente como **obsoleto/legacy**. SunshineLauncher busca ofrecer a los usuarios de la versión anterior una nueva forma para los usuarios que usan o usaban dicha estructura.
+El proyecto **CCMC Launcher** por CrowRei34, en el cual se basaba la versión anterior (v1.0, v1.1 y v1.2) de la herramienta **MCPETool** (Ahora llamada **PYmc**) se considera actualmente como **obsoleto/legacy**. PYmc busca ofrecer a los usuarios de la versión anterior una nueva forma para los usuarios que usan o usaban dicha estructura.
 
-**SunshineLauncher** NO incluye, distribuye ni facilita la obtención ilegal de archivos APK o datos del juego. El usuario es el único responsable de poseer una copia del juego. SunshineLauncher es exclusivamente una herramienta de gestión para binarios del proyecto **MCPELauncher-Manifest**.
+**PYmc** NO incluye, distribuye ni facilita la obtención ilegal de archivos APK o datos del juego. El usuario es el único responsable de poseer una copia del juego. PYmc es exclusivamente una herramienta de gestión para binarios del proyecto **MCPELauncher-Manifest**.
 
 ## 3. Uso No Lucrativo
 Este proyecto se distribuye bajo la licencia **GNU GPL v3.0**. Es de código abierto y se entrega con la intención de ser gratuito para siempre. Se agradece a la comunidad no monetizar esta herramienta para mantener el espíritu de colaboración.
@@ -35,7 +35,7 @@ Este proyecto se distribuye bajo la licencia **GNU GPL v3.0**. Es de código abi
 * Fallos en el sistema derivados del uso de la herramienta.
 * Algún error causado por descargar un launcher desde una fuente no-oficial.
 
-Al utilizar **SunshineLauncher**, aceptas estos términos y condiciones.
+Al utilizar **PYmc**, aceptas estos términos y condiciones.
 
 ---
 *Hecho con ❤️ y 🤖 para la comunidad Linux.*

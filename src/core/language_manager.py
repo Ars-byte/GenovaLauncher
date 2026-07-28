@@ -38,7 +38,7 @@ def load_language(lang_code):
         return False
 
     global_vars = {
-        "APP_NAME": getattr(c, "APP_NAME", "SunshineLauncher"),
+        "APP_NAME": getattr(c, "APP_NAME", "PYmc"),
         "VERSION_LAUNCHER": getattr(c, "VERSION_LAUNCHER", "1.0.0"),
         "DEVELOPERS": getattr(c, "DEVELOPERS", "Ars-Byte"),
         "UPDATE_NAME": getattr(c, "UPDATE_NAME", "New Update"),
