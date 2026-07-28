@@ -226,7 +226,7 @@ def create_version_shortcut(app, version):
         apps_dir = os.path.join(app.home, c.APPLICATIONS_DIR)
         os.makedirs(apps_dir, exist_ok=True)
 
-        shortcut_path = os.path.join(apps_dir, f"sunshine-{version}.desktop")
+        shortcut_path = os.path.join(apps_dir, f"genova-{version}.desktop")
         vpath = os.path.join(app.active_path, c.VERSIONS_DIR, version)
 
         if app.running_in_flatpak:
@@ -272,7 +272,7 @@ Keywords=minecraft;mcpe;bedrock;
                 logger.debug(f"Could not resolve XDG desktop dir, using default: {e}")
 
             if os.path.exists(desktop_dir):
-                desktop_shortcut = os.path.join(desktop_dir, f"sunshine-{version}.desktop")
+                desktop_shortcut = os.path.join(desktop_dir, f"genova-{version}.desktop")
                 with open(desktop_shortcut, "w") as f:
                     f.write(content)
                 os.chmod(desktop_shortcut, 0o755)

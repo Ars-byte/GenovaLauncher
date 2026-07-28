@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script de lanzamiento para SunshineLauncher en Flatpak
+# Script de lanzamiento para GenovaLauncher en Flatpak
 # Configurar variables de entorno
 
 #General
@@ -25,7 +25,7 @@ export QTWEBENGINE_CHROMIUM_FLAGS="--no-sandbox --ignore-gpu-blocklist"
 export QT_QUICK_BACKEND="software"
 
 # Directorio de datos del usuario
-DATA_DIR="${XDG_DATA_HOME:-$HOME/.var/app/org.sunshine.Launcher/data}/mcpelauncher"
+DATA_DIR="${XDG_DATA_HOME:-$HOME/.var/app/org.genova.Launcher/data}/mcpelauncher"
 mkdir -p "$DATA_DIR"
 
-exec /app/lib/sunshine/SunshineLauncherMCPE "$@"
+exec /app/lib/genova/GenovaLauncherMCPE "$@"

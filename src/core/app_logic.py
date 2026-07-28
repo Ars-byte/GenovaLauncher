@@ -866,7 +866,7 @@ def launch_game(app):
         # Clear LD_LIBRARY_PATH so child processes (mcpelauncher-client,
         # mcpelauncher-webview) resolve ALL libraries — including Qt6 —
         # exclusively from the KDE runtime via ld.so.cache. The PyInstaller
-        # bundle at /app/lib/sunshine/_internal bundles an older Qt6 that
+        # bundle at /app/lib/genova/_internal bundles an older Qt6 that
         # conflicts with the runtime's 6.10.3 private ABI symbols.
         env.pop("LD_LIBRARY_PATH", None)
         # Ensure QML import paths are set for mcpelauncher-webview (inherits

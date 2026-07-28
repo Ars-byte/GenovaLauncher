@@ -226,7 +226,7 @@ def launch_google_login(app, on_finished=None):
 
     if app.running_in_flatpak:
         # Clear LD_LIBRARY_PATH so the linker does NOT see the PyInstaller
-        # bundle at /app/lib/sunshine (which bundles an older Qt6). The
+        # bundle at /app/lib/genova (which bundles an older Qt6). The
         # signin binary must resolve Qt6 exclusively from the KDE runtime
         # at /usr/lib/x86_64-linux-gnu/ where 6.10.3 lives.
         env = QProcessEnvironment.systemEnvironment()
