@@ -1,6 +1,6 @@
 <img src="icon.png" width="64" align="right" />
 
-# PYmc
+# GenovaLauncher
 
 
 > Website: [ars-byte.github.io/sunshine-website](https://ars-byte.github.io/sunshine-website/)
@@ -46,7 +46,7 @@ sudo apt install qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip un
 # Arch
 # NixOS (flake)
 # Agrega a tu flake.nix en inputs:
-#   pymc.url = "github:Ars-byte/Sunshine-launcher";
+#   genovalauncher.url = "github:Ars-byte/Sunshine-launcher";
 sudo pacman -S qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzip zenity
 ```
 
@@ -57,19 +57,19 @@ sudo pacman -S qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzi
 ### Void Linux (paquete xbps)
 
 ```bash
-xbps-rindex -a pymc-1.0.0_1.x86_64.xbps
-doas xbps-install -R $PWD pymc
-pymc
+xbps-rindex -a genovalauncher-1.0.0_1.x86_64.xbps
+doas xbps-install -R $PWD genovalauncher
+genovalauncher
 ```
 
 ### Desde el release portable
 
-1. Descarga el ultimo `PYmc-v*.tar.gz` de [Releases](https://github.com/Ars-byte/Sunshine-launcher/releases)
+1. Descarga el ultimo `GenovaLauncher-v*.tar.gz` de [Releases](https://github.com/Ars-byte/Sunshine-launcher/releases)
 2. Extrae en cualquier directorio
 3. Ejecuta:
 
 ```bash
-./PYmc.sh
+./GenovaLauncher.sh
 ```
 
 ### Desde el codigo fuente
@@ -87,7 +87,7 @@ pip install -r requirements.txt
 
 ## Rendimiento
 
-PYmc aplica automaticamente optimizaciones para mejorar el rendimiento del juego:
+GenovaLauncher aplica automaticamente optimizaciones para mejorar el rendimiento del juego:
 
 - `mesa_glthread=true` — despacho GL multihilo para GPUs Intel/AMD
 - Cache de shaders persistente (`~/.cache/sunshine-shaders/`)

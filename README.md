@@ -1,6 +1,6 @@
 <img src="icon.png" width="64" align="right" />
 
-# PYmc
+# GenovaLauncher
 
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 
@@ -9,7 +9,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://www.kernel.org/)
 [![License](https://img.shields.io/badge/License-GPL%20v3-red?style=flat-square)](LICENSE)
 
-> Website: [ars-byte.github.io/pymc-website](https://ars-byte.github.io/pymc-website/)
+> Website: [ars-byte.github.io/genovalauncher-website](https://ars-byte.github.io/genovalauncher-website/)
 
 A modern graphical launcher for **Minecraft: Bedrock Edition** on Linux, built with PySide6 (Qt6) and powered by the [mcpelauncher](https://github.com/minecraft-linux/mcpelauncher-manifest) project.
 
@@ -20,48 +20,48 @@ A modern graphical launcher for **Minecraft: Bedrock Edition** on Linux, built w
 ### Void Linux (xbps)
 
 ```bash
-xbps-rindex -a pymc-1.0.0_1.x86_64.xbps
-doas xbps-install -R $PWD pymc
-pymc
+xbps-rindex -a genovalauncher-1.0.0_1.x86_64.xbps
+doas xbps-install -R $PWD genovalauncher
+genovalauncher
 ```
 
 ### Debian/Ubuntu (.deb)
 
 ```bash
-sudo dpkg -i pymc-1.0.0-amd64.deb
+sudo dpkg -i genovalauncher-1.0.0-amd64.deb
 sudo apt install -f
-pymc
+genovalauncher
 ```
 
 ### AppImage (Universal)
 
 ```bash
-chmod +x PYmc-1.0.0-x86_64.AppImage
-./PYmc-1.0.0-x86_64.AppImage
+chmod +x GenovaLauncher-1.0.0-x86_64.AppImage
+./GenovaLauncher-1.0.0-x86_64.AppImage
 ```
 
 ### Portable
 
 ```bash
-tar xzf PYmc-v1.0.0.tar.gz
-cd PYmc-v1.0.0
-./pymc.sh
+tar xzf GenovaLauncher-v1.0.0.tar.gz
+cd GenovaLauncher-v1.0.0
+./genovalauncher.sh
 ```
 
 ### NixOS
 
 ```bash
 # flake.nix
-inputs.pymc.url = "github:Ars-byte/PYmc";
-environment.systemPackages = [ inputs.pymc.packages.${system}.default ];
+inputs.genovalauncher.url = "github:Ars-byte/GenovaLauncher";
+environment.systemPackages = [ inputs.genovalauncher.packages.${system}.default ];
 sudo nixos-rebuild switch
 ```
 
 ### From Source
 
 ```bash
-git clone https://github.com/Ars-byte/PYmc.git
-cd PYmc
+git clone https://github.com/Ars-byte/GenovaLauncher.git
+cd GenovaLauncher
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 ./run.sh
@@ -71,7 +71,7 @@ pip install -r requirements.txt
 
 ## Features
 
-![PYmc Preview](assets/preview.png)
+![GenovaLauncher Preview](assets/preview.png)
 
 
 - **Version management** — install, switch, and play multiple Minecraft Bedrock versions from APK or Google Play

@@ -1,4 +1,4 @@
-# 📝 Changelog - PYmc
+# 📝 Changelog - GenovaLauncher
 
 # [3.1] - 2026-06-28 — Refinements & New Features
 
@@ -210,7 +210,7 @@
 - **SOPORTE:** Tiene soporte para leer archivos en diferentes formatos (.mcpack, .mcaddon, .mcworld, .mcworldtemplate). Resuelve la ubicación del tipo de addon y en el caso de que no pueda, se puede ajustar manualmente. Ademas tambien muestra el nombre del addon real si esta dentro de archivos `.lang`.
 - **FIX:** Se optimizó el sistema de renderizado a uno por lotes y caché para un desplazamiento fluido.
 - **FIX:** El botón "Fix Shaders" se corrigió a "Desactivar Shaders" siendo el terminó más correcto. Además que se agrego la opción de modificar el modo de graficos desde el *Configurador de juego* disponible en herramientas.
-- **FIX:** Ahora el resolvedor de las claves internas tendra en cuenta `pymc-config.json` a la hora de actualizar los datos.
+- **FIX:** Ahora el resolvedor de las claves internas tendra en cuenta `genovalauncher-config.json` a la hora de actualizar los datos.
 
 # [v2.1.1] - 2026-02-25
 - **FIX:** Se corrigio un error que provocaba que los usuarios de config anterior no podian cargar correctamente la ruta de binarios de Flatpak correctamente.
@@ -243,7 +243,7 @@
 - **libsqliteX.so:** ya puede encontrar el lib necesario dependiendo de la arquitectura correctamente.
 
 # [v2.0] - 2026-01-02
-- **Nombre nuevo:** Ahora pasara de MCPETool a la naturaleza de un launcher llamado **PYmc**.
+- **Nombre nuevo:** Ahora pasara de MCPETool a la naturaleza de un launcher llamado **GenovaLauncher**.
 - **Nuevas herramientas:** Migración, Acceso directo en el menú de inicio.
 - Añadidos en Sección Ajustes y Acerca de.
 - Independencia para usar binarios personalizados.

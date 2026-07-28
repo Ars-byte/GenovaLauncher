@@ -1,11 +1,11 @@
-# 📘 MANUAL DE USO - PYmc v3.1
+# 📘 MANUAL DE USO - GenovaLauncher v3.1
 
 **Versión:** 3.1
 
 ---
 
 ## 🌟 1. Introducción
-**PYmc** es una interfaz gráfica para gestionar Minecraft: Bedrock Edition en Linux. Trabaja con los binarios del proyecto **MCPELauncher-manifest** para instalar, lanzar y personalizar el juego.
+**GenovaLauncher** es una interfaz gráfica para gestionar Minecraft: Bedrock Edition en Linux. Trabaja con los binarios del proyecto **MCPELauncher-manifest** para instalar, lanzar y personalizar el juego.
 
 Migrado a **PySide6 (Qt6)** desde la versión 3.0, ofrece una interfaz fluida con soporte HiDPI, temas, fondos personalizados y traducción a 7 idiomas.
 
@@ -22,12 +22,12 @@ Migrado a **PySide6 (Qt6)** desde la versión 3.0, ofrece una interfaz fluida co
 
 **Repositorio (actualizaciones automáticas):**
 ```bash
-flatpak install --user PYmc com.pymc.Launcher
+flatpak install --user GenovaLauncher com.genovalauncher.Launcher
 ```
 
 **Bundle:**
 ```bash
-flatpak install --user PYmc.flatpak
+flatpak install --user GenovaLauncher.flatpak
 ```
 
 **Runtums necesarios:**
@@ -36,9 +36,9 @@ flatpak install org.kde.Platform//6.10 io.qt.qtwebengine.BaseApp//6.10
 ```
 
 ### Versión portátil
-Descarga `PYmc-vX.Y.tar.gz` de **Releases**, extrae y coloca los binarios de MCPELauncher en `bin/`. Ejecuta:
+Descarga `GenovaLauncher-vX.Y.tar.gz` de **Releases**, extrae y coloca los binarios de MCPELauncher en `bin/`. Ejecuta:
 ```bash
-./PYmc.sh
+./GenovaLauncher.sh
 ```
 
 ### Desde código fuente
