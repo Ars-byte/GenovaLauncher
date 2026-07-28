@@ -175,6 +175,14 @@ class SunshineLauncherApp(QMainWindow):
         self._setup_tray_icon()
 
         # Apply initial theme settings
+        last_theme = self.config.get(c.CONFIG_KEY_COLOR_THEME, "")
+        if last_theme and last_theme != "default":
+            theme_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+                os.path.abspath(__file__)))), "themes", f"{last_theme}.json")
+            if os.path.isfile(theme_path):
+                import json
+                with open(theme_path) as f:
+                    self._custom_theme = json.load(f)
         self.apply_theme_settings()
         self.update_floating_labels()
 
@@ -399,7 +407,43 @@ class SunshineLauncherApp(QMainWindow):
             "category_hover": "#D4B896",
         },
     }
+    # Custom theme loaded from JSON (overrides palette at runtime)
+    _custom_theme = None
 
+    def load_custom_theme(self, theme_name):
+        """Load a theme from themes/<name>.json and apply it."""
+        import json
+        theme_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__)))), "themes", f"{theme_name}.json")
+        if not os.path.isfile(theme_path):
+            logger.warning(f"Theme not found: {theme_path}")
+            return False
+        with open(theme_path, "r") as f:
+            self._custom_theme = json.load(f)
+        self.config[c.CONFIG_KEY_COLOR_THEME] = theme_name
+        self.config_manager.save_config()
+        self._last_qss_params = None  # force QSS rebuild
+        self.apply_theme_settings()
+        return True
+
+    @classmethod
+    def get_available_themes(cls):
+        """Return list of (id, name) tuples for all JSON themes."""
+        import json
+        themes_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__)))), "themes")
+        themes = [("default", "Noctalia Default")]
+        if os.path.isdir(themes_dir):
+            for f in sorted(os.listdir(themes_dir)):
+                if f.endswith(".json"):
+                    try:
+                        with open(os.path.join(themes_dir, f)) as fp:
+                            data = json.load(fp)
+                        name = data.get("name", f[:-5])
+                        themes.append((f[:-5], name))
+                    except Exception:
+                        pass
+        return themes
     # _detect_qt6ct() and _load_qt6ct_palette() moved to src/gui/theme.py
 
     def apply_theme_settings(self):
@@ -430,8 +474,12 @@ class SunshineLauncherApp(QMainWindow):
             return
 
         from src.utils.colors import hex_to_rgba, adjust_color
-        p = self.PALETTE[mode]
-        accent = c.THEME_COLOR_MAP.get(theme_color, p["accent"])
+        # Use custom theme if loaded, otherwise fall back to PALETTE
+        if self._custom_theme and mode == "Dark":
+            p = self._custom_theme
+        else:
+            p = self.PALETTE.get(mode, self.PALETTE["Dark"])
+        accent = c.THEME_COLOR_MAP.get(theme_color, p.get("accent", "#7aa2f7"))
         bg            = p["bg"]
         text          = p["text"]
         tab_bg        = p["tab_bg"]

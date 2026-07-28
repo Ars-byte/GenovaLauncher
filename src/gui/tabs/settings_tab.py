@@ -454,6 +454,21 @@ class SettingsTab(QWidget):
         self.combo_theme.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         grid.addWidget(self.combo_theme, 0, 1)
 
+        # JSON Theme Preset
+        self.combo_preset = QComboBox()
+        from src.gui.main_window import SunshineLauncherApp
+        for pid, pname in SunshineLauncherApp.get_available_themes():
+            self.combo_preset.addItem(pname, pid)
+        current_preset = self.app.config.get(c.CONFIG_KEY_COLOR_THEME, "default")
+        idx = self.combo_preset.findData(current_preset)
+        if idx >= 0:
+            self.combo_preset.setCurrentIndex(idx)
+        self.combo_preset.currentIndexChanged.connect(self.on_preset_change)
+        preset_label = QLabel("Theme:")
+        preset_label.setObjectName("SubtitleLabel")
+        grid.addWidget(preset_label, 0, 2)
+        grid.addWidget(self.combo_preset, 0, 3)
+
         # App Mode
         grid.addWidget(QLabel(c.t("UI_LABEL_APPEARANCE_MODE")), 1, 0)
         self.combo_app_mode = QComboBox()
@@ -757,6 +772,17 @@ class SettingsTab(QWidget):
         """Apply the selected color theme."""
         theme_key = self.combo_theme.currentData() or "blue"
         self.app.change_appearance("color", theme_key)
+
+    def on_preset_change(self, index):
+        """Load a JSON theme preset."""
+        if index < 0:
+            return
+        preset_id = self.combo_preset.currentData()
+        if preset_id == "default":
+            self.app._custom_theme = None
+            self.app.apply_theme_settings()
+        else:
+            self.app.load_custom_theme(preset_id)
 
     def on_appearance_mode_change(self, display_name):
         """Switch between Dark and Light appearance modes."""

@@ -44,6 +44,7 @@ pil_bin = collect_dynamic_libs('Pillow')
 my_datas = [
     ('icon.png', '.'),
     ('src/langs', 'src/langs'),
+    ('themes', 'themes'),
     ('Docs', 'Docs'),
 ]
 
