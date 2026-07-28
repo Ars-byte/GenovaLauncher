@@ -927,7 +927,7 @@ def launch_game(app):
     os.makedirs(cache_dir, exist_ok=True)
     env.setdefault("MESA_SHADER_CACHE_DIR", cache_dir)
     env.setdefault("MESA_GLSL_CACHE_DIR", cache_dir)
-    env.setdefault("MESA_SHADER_CACHE_MAX_SIZE", "2147483648")  # 2 GB
+    env.setdefault("MESA_SHADER_CACHE_MAX_SIZE", "536870912")  # 512 MB
     # Intel ANV Vulkan sparse memory support
     if "ANV_SPARSE" not in env:
         env["ANV_SPARSE"] = "1"
@@ -994,6 +994,13 @@ def launch_game(app):
                 launched = True
 
         if not launched:
+            # ── RAM limit: prevent game from saturating system memory ──
+            prlimit = shutil.which("prlimit")
+            mem_limit_mb = int(app.config.get("memory_limit_mb", 4096))
+            if prlimit and mem_limit_mb > 0:
+                cmd = [prlimit, f"--as={mem_limit_mb * 1024 * 1024}"] + cmd
+                logger.info(f"Memory limit set: {mem_limit_mb} MB")
+
             game_fh = logger.open_game_output("a")
             if game_fh:
                 ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
