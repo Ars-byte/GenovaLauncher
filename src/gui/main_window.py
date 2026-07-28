@@ -363,18 +363,26 @@ class SunshineLauncherApp(QMainWindow):
     # ── Palette ──────────────────────────────────────────
     PALETTE = {
         "Dark": {
-            "bg":           "#1E1612",
-            "text":         "#E8E0D4",
-            "tab_bg":       "#161010",
-            "input_bg":     "#2A1E16",
-            "input_text":   "#E8E0D4",
-            "input_border": "#3E2E22",
-            "frame_bg":     "#241A14",
-            "accent":       "#C4956A",
-            "floating_bg":  "#3E2E22",
-            "floating_border_base": "#3E2E22",
-            "tab_hover":    "#C4956A",
-            "category_hover": "#3E2E22",
+            "bg":           "#1a1b26",
+            "text":         "#c0caf5",
+            "tab_bg":       "#16161e",
+            "input_bg":     "#1f2335",
+            "input_text":   "#c0caf5",
+            "input_border": "#3b4261",
+            "frame_bg":     "#1f2335",
+            "accent":       "#7aa2f7",
+            "floating_bg":  "#16161e",
+            "floating_border_base": "#3b4261",
+            "tab_hover":    "#7aa2f7",
+            "category_hover": "#1f2335",
+            "play_accent":       "#9ece6a",
+            "play_accent_hover": "#b9f27c",
+            "tools_accent":      "#e0af68",
+            "tools_accent_hover":"#ffc777",
+            "settings_accent":   "#7dcfff",
+            "settings_accent_hover":"#b4f9f8",
+            "about_accent":      "#bb9af7",
+            "about_accent_hover":"#c4a9ff",
         },
         "Light": {
             "bg":           "#FBF6F0",
@@ -463,10 +471,10 @@ class SunshineLauncherApp(QMainWindow):
         cat_hover = p["category_hover"]
 
         # ── Per-tab accent overrides ──
-        play_accent = accent
-        tools_accent = p.get("category_hover", accent)
-        settings_accent = hex_to_rgba(text, 0.45)
-        about_accent = hex_to_rgba(accent, 0.6)
+        play_accent = p.get("play_accent", accent)
+        tools_accent = p.get("tools_accent", p.get("category_hover", accent))
+        settings_accent = p.get("settings_accent", hex_to_rgba(text, 0.45))
+        about_accent = p.get("about_accent", hex_to_rgba(accent, 0.6))
 
         qss = f"""
             QMainWindow, QWidget#centralWidget {{
