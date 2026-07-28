@@ -2,7 +2,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 
-![PYmc Preview](assets/preview.png)
 
 [![PySide6](https://img.shields.io/badge/UI-PySide6-green?style=flat-square&logo=qt&logoColor=white)](https://www.qt.io/qt-for-python)
 [![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://www.kernel.org/)
@@ -69,6 +68,9 @@ pip install -r requirements.txt
 ---
 
 ## Features
+
+![PYmc Preview](assets/preview.png)
+
 
 - **Version management** — install, switch, and play multiple Minecraft Bedrock versions from APK or Google Play
 - **Resource manager** — manage resource packs, behavior packs, skins and worlds
