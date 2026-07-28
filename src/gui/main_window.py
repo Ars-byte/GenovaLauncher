@@ -632,23 +632,21 @@ class PYmcApp(QMainWindow):
                 background-color: {adjust_color(accent, 8)};
             }}
             QPushButton#ToolButton {{
-                background-color: {hex_to_rgba(tools_accent, 0.12)};
-                color: {text};
-                border: 1px solid {hex_to_rgba(tools_accent, 0.3)};
+                background-color: {tools_accent};
+                color: #FFFFFF;
+                border: 1px solid {tools_accent};
                 border-radius: 14px;
-                font-weight: 500;
+                font-weight: 600;
                 font-size: 12px;
                 min-height: 28px;
                 padding: 4px 18px;
             }}
             QPushButton#ToolButton:hover {{
-                background-color: {hex_to_rgba(tools_accent, 0.25)};
-                border: 1px solid {hex_to_rgba(tools_accent, 0.5)};
+                background-color: {adjust_color(tools_accent, 8)};
+                border: 1px solid transparent;
             }}
             QPushButton#ToolButton:pressed {{
-                background-color: {tools_accent};
-                color: #FFFFFF;
-                border: 1px solid {tools_accent};
+                background-color: {adjust_color(tools_accent, -6)};
             }}
             QPushButton#CapsuleButton {{
                 background-color: {hex_to_rgba(accent, 0.10)};
