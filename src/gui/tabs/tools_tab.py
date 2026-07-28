@@ -60,6 +60,7 @@ class ToolsTab(QWidget):
             {
                 "title": c.t("UI_SECTION_SYSTEM"),
                 "tools": [
+                    {"text": "Open Logs", "cmd": lambda: self.app.logic.open_data_folder(self.app, subfolder="logs"), "color": None},
                     {"text": c.t("UI_BUTTON_VERIFY_HW"), "cmd": lambda: self.app.logic.check_requirements_dialog(self.app), "color": None},
                     {"text": c.t("UI_LABEL_COMPATIBLE_RANGE"), "cmd": None, "show_compat": True}
                 ]
