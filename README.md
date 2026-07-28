@@ -54,6 +54,15 @@ sudo pacman -S qt6-base qt6-webengine qt6-declarative qt6-webchannel libzip unzi
 
 ## Installation
 
+### Void Linux (xbps package)
+
+```bash
+# Download the .xbps from Releases, then:
+xbps-rindex -a sunshine-launcher-1.0.0_1.x86_64.xbps
+doas xbps-install -R $PWD sunshine-launcher
+sunshine-launcher
+```
+
 ### Portable Release
 
 1. Download the latest `SunshineLauncher-v*.tar.gz` from [Releases](https://github.com/Ars-Byte/SunshineLauncher/releases)
