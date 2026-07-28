@@ -52,32 +52,14 @@ class ToolsTab(QWidget):
                 "tools": [
                     {"text": c.t("UI_BUTTON_INSTALL_APK"), "cmd": self.app.install_apk_dialog, "color": None},
                     {"text": c.t("UI_BUTTON_MANAGE_SHORTCUT"), "cmd": self.app.open_version_manager, "color": None},
-                    {"text": c.t("UI_BUTTON_MIGRATE_DATA"), "cmd": self.app.open_migration_tool, "color": None},
-                ]
-            },
-            {
-                "title": c.t("UI_SECTION_CUSTOMIZATION"),
-                "tools": [
-                    {"text": c.t("UI_BUTTON_SKIN_PACK_CREATOR"), "cmd": self.app.open_skin_tool, "color": None},
-                    {"text": c.t("UI_BUTTON_GAME_CONFIG"), "cmd": self.app.open_game_config_tool, "color": None},
-                    {"text": c.t("UI_BUTTON_DISABLE_SHADERS"), "cmd": lambda: self.app.logic.disable_shaders(self.app), "color": None, "show_status": True},
-                ]
-            },
-            {
-                "title": c.t("UI_SECTION_FILES"),
-                "tools": [
-                    {"text": c.t("UI_BUTTON_ADDON_MANAGER"), "cmd": self.app.open_addon_manager, "color": None},
                     {"text": c.t("UI_BUTTON_OPEN_DATA_FOLDER"), "cmd": lambda: self.app.logic.open_data_folder(self.app), "color": None},
                     {"text": c.t("UI_BUTTON_OPEN_SCREENSHOTS"), "cmd": lambda: self.app.logic.export_screenshots_dialog(self.app), "color": None},
+                    {"text": c.t("UI_BUTTON_GAME_CONFIG"), "cmd": self.app.open_game_config_tool, "color": None},
                 ]
             },
             {
                 "title": c.t("UI_SECTION_SYSTEM"),
                 "tools": [
-                    {
-                        "text": c.t("UI_BUTTON_VERIFY_DEPS_FLATPAK") if self.app.running_in_flatpak else c.t("UI_BUTTON_VERIFY_DEPS_LOCAL"),
-                        "cmd": lambda: self.app.logic.verify_dependencies(self.app), "color": None
-                    },
                     {"text": c.t("UI_BUTTON_VERIFY_HW"), "cmd": lambda: self.app.logic.check_requirements_dialog(self.app), "color": None},
                     {"text": c.t("UI_LABEL_COMPATIBLE_RANGE"), "cmd": None, "show_compat": True}
                 ]

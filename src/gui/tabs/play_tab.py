@@ -14,42 +14,15 @@ class PlayTab(QWidget):
         self.main_layout.setContentsMargins(8, 4, 8, 8)
         self.main_layout.setSpacing(4)
 
-        # 1. Header (Status)
+        # 1. Header (Game Status)
         self.header_layout = QHBoxLayout()
         self.main_layout.addLayout(self.header_layout)
-
-        self.lbl_status = QLabel(c.t("UI_LABEL_SEARCHING"))
-        self.lbl_status.setObjectName("FloatingLabel")
-        self.header_layout.addWidget(self.lbl_status)
 
         self.lbl_game_status = QLabel(c.t("UI_GAME_STATUS_IDLE"))
         self.lbl_game_status.setObjectName("SubtitleLabel")
         self.header_layout.addWidget(self.lbl_game_status)
 
         self.header_layout.addStretch()
-
-        # Selector de modo (simplificado)
-        self.selectors_layout = QHBoxLayout()
-        self.header_layout.addLayout(self.selectors_layout)
-
-        self.lbl_install = QLabel(c.t("UI_LABEL_INSTALLATION"))
-        self.lbl_install.setObjectName("SubtitleLabel")
-        self.selectors_layout.addWidget(self.lbl_install)
-
-        # Selector de modo
-        if self.app.running_in_flatpak:
-            mode_keys = [c.MODE_INSTALL_OWN, c.MODE_INSTALL_SHARED, c.MODE_INSTALL_FLATPAK]
-        else:
-            mode_keys = [c.MODE_INSTALL_LOCAL, c.MODE_INSTALL_FLATPAK]
-
-        mode_values = [c.t("UI_INSTALL_MODES")[k] for k in mode_keys]
-
-        self.combo_mode = QComboBox()
-        self.combo_mode.addItems(mode_values)
-        self.combo_mode.setFixedWidth(170)
-        self.combo_mode.setFixedHeight(28)
-        self.combo_mode.currentTextChanged.connect(lambda mode: self.app.logic.change_mode_ui(self.app, mode))
-        self.selectors_layout.addWidget(self.combo_mode)
 
         # 2. Version list title
         self.lbl_version_title = QLabel(c.t("UI_LABEL_INSTALLED_VERSIONS"))

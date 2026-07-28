@@ -1,9 +1,10 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QScrollArea, QFrame
 from PySide6.QtCore import Qt
 from src import constants as c
+import platform, sys, os
 
 class AboutTab(QWidget):
-    """Tab with launcher information, description, and credits."""
+    """Tab with launcher information, description, system info and credits."""
 
     def __init__(self, parent, app):
         super().__init__(parent)
@@ -12,29 +13,50 @@ class AboutTab(QWidget):
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(8, 4, 8, 4)
 
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QFrame.NoFrame)
+        scroll.setObjectName("GroupFrame")
+        content = QWidget()
+        layout = QVBoxLayout(content)
+
         # Title
-        self.title_label = QLabel(c.APP_NAME)
-        self.title_label.setObjectName("HeaderLabel")
-        self.main_layout.addWidget(self.title_label)
+        layout.addWidget(QLabel(c.APP_NAME, objectName="HeaderLabel"))
 
-        # Description (translated)
-        self.desc_label = QLabel(c.t("UI_ABOUT_DESCRIPTION"))
-        self.desc_label.setWordWrap(True)
-        self.desc_label.setObjectName("SubtitleLabel")
-        self.desc_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        self.main_layout.addWidget(self.desc_label)
+        # Description
+        desc = QLabel(c.t("UI_ABOUT_DESCRIPTION"))
+        desc.setWordWrap(True)
+        desc.setObjectName("SubtitleLabel")
+        layout.addWidget(desc)
 
-        self.main_layout.addStretch(1)
+        # System info
+        info = QLabel(self._sys_info())
+        info.setWordWrap(True)
+        info.setObjectName("SubtitleLabel")
+        info.setStyleSheet("color: #888; font-family: monospace; font-size: 11px;")
+        layout.addWidget(info)
 
-        # Credits (translated)
-        self.credits_label = QLabel(c.t("UI_ABOUT_CREDITS"))
-        self.credits_label.setObjectName("SubtitleLabel")
-        self.credits_label.setAlignment(Qt.AlignCenter)
-        self.main_layout.addWidget(self.credits_label)
+        layout.addStretch(1)
 
-        self.version_label = QLabel(
-            f"{c.t('UI_VERSION_TEXT')}{c.VERSION_LAUNCHER}"
+        # Credits
+        layout.addWidget(QLabel(c.t("UI_ABOUT_CREDITS"), objectName="SubtitleLabel",
+                                alignment=Qt.AlignCenter))
+        layout.addWidget(QLabel(f"{c.t('UI_VERSION_TEXT')}{c.VERSION_LAUNCHER}",
+                                objectName="SubtitleLabel", alignment=Qt.AlignCenter))
+
+        scroll.setWidget(content)
+        self.main_layout.addWidget(scroll)
+
+    def _sys_info(self):
+        try:
+            import PySide6
+            qt = f"PySide6 {PySide6.__version__}"
+        except Exception:
+            qt = "PySide6 (unknown)"
+        return (
+            f"System: {platform.system()} {platform.release()}\n"
+            f"Arch: {platform.machine()}\n"
+            f"Python: {sys.version.split()[0]}\n"
+            f"Qt: {qt}\n"
+            f"Path: {os.path.expanduser('~/.local/share/mcpelauncher/')}"
         )
-        self.version_label.setObjectName("SubtitleLabel")
-        self.version_label.setAlignment(Qt.AlignCenter)
-        self.main_layout.addWidget(self.version_label)

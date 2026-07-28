@@ -14,15 +14,12 @@ class SettingsTab(QWidget):
     """Settings tab with categorized sections using a top category bar and stacked pages."""
 
     CATEGORIES = [
-        ("general", "UI_CATEGORY_GENERAL"),
         ("launch", "UI_CATEGORY_LAUNCH"),
         ("appearance", "UI_CATEGORY_APPEARANCE"),
-        ("integrations", "UI_CATEGORY_INTEGRATIONS"),
     ]
 
     # Map category keys to setup method names
     CATEGORY_METHODS = {
-        "general": ["setup_profiles_section", "setup_actions_section"],
         "launch": ["setup_binaries_section", "setup_compatibility_section"],
         "appearance": [
             "setup_appearance_section", "setup_section_opacity_section",
@@ -67,7 +64,7 @@ class SettingsTab(QWidget):
         self.toggle_custom_env()
 
         # Start on General
-        self._switch_category("general")
+        self._switch_category("launch")
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():

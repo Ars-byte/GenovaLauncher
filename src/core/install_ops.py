@@ -3,6 +3,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QFrame, QVBoxLayout, QHBoxLayout, QGridLayout
 
 from src import constants as c
+from src.utils.colors import hex_to_rgba
 from src.utils.image_manager import ImageManager
 from src.utils.logger import logger
 
@@ -73,17 +74,21 @@ def detect_installation(app):
     elif imode == c.MODE_INSTALL_FLATPAK:
         status_text = c.t("UI_STATUS_FLATPAK_CUSTOM", flatpak_id=fid)
 
-    app.play_tab.lbl_status.setText(status_text)
     app.update_floating_labels()
-    app.play_tab.update_profile_indicator()
+    if hasattr(app.play_tab, 'update_profile_indicator'):
+        app.play_tab.update_profile_indicator()
 
     refresh_version_list(app)
     check_shader_status(app)
 
     try:
-        disp = c.t("UI_INSTALL_MODES").get(imode, "Unknown")
-        app.play_tab.combo_mode.setCurrentText(disp)
-        app.tools_tab.lbl_tools_status.setText(status_text)
+        if hasattr(app.play_tab, 'combo_mode'):
+            disp = c.t("UI_INSTALL_MODES").get(imode, "Unknown")
+            app.play_tab.combo_mode.setCurrentText(disp)
+        if hasattr(app.play_tab, 'lbl_status'):
+            app.play_tab.lbl_status.setText(status_text)
+        if hasattr(app.tools_tab, 'lbl_tools_status'):
+            app.tools_tab.lbl_tools_status.setText(status_text)
         app.update_floating_labels()
     except Exception as e:
         logger.warning("Failed to update install UI: %s", e)
@@ -293,11 +298,9 @@ def select_version(app, version):
     app.play_tab.set(version)
     theme_color = app.config.get(c.CONFIG_KEY_COLOR_THEME, "blue")
     accent = c.THEME_COLOR_MAP.get(theme_color, "#1f6aa5")
-    mode = app.config.get(c.CONFIG_KEY_APPEARANCE, "Dark")
-    unselected_bg = "#3a3a3a" if mode == "Dark" else "#e0e0e0"
 
     for v, card in app.version_cards.items():
         if v == version:
-            card.setStyleSheet(f"background-color: {accent};")
+            card.setStyleSheet(f"border: 2px solid {accent}; background-color: {hex_to_rgba(accent, 0.08)};")
         else:
-            card.setStyleSheet(f"background-color: {unselected_bg};")
+            card.setStyleSheet("border: 1px solid transparent;")
