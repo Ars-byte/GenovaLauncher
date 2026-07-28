@@ -74,7 +74,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='PYmcMCPE',
+    name='GenovaLauncherMCPE',
     debug=False,
     bootloader_ignore_signals=False,
     strip=True,
@@ -95,5 +95,5 @@ coll = COLLECT(
     strip=True,
     upx=False,
     upx_exclude=[],
-    name='PYmcMCPE',
+    name='GenovaLauncherMCPE',
 )

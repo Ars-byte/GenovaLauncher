@@ -1,5 +1,5 @@
 {
-  description = "PYmc — Minecraft Bedrock Launcher for Linux";
+  description = "GenovaLauncher — Minecraft Bedrock Launcher for Linux";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -13,7 +13,7 @@
       in
       {
         packages.default = pkgs.python3Packages.buildPythonApplication {
-          pname = "pymc";
+          pname = "genovalauncher";
           version = "1.0.0";
           src = self;
 
