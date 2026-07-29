@@ -67,6 +67,7 @@ UI_GAME_STATUS_IDLE = "⏹ Inactivo"
 UI_CHECKBOX_GAMEMODE = "Activar GameMode"
 UI_CHECKBOX_DEBUG_LOG = "Ver Log (Terminal)"
 UI_BUTTON_PLAY_NOW = "JUGAR AHORA"
+UI_LAUNCH_OPTIONS = "Opciones de Lanzamiento"
 
 # Mapeo de Modos de Instalación (Display)
 UI_INSTALL_MODES = {

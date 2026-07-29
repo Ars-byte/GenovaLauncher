@@ -12,7 +12,7 @@ class PlayTab(QWidget):
         # Layout principal
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(8, 4, 8, 8)
-        self.main_layout.setSpacing(4)
+        self.main_layout.setSpacing(6)
 
         # 1. Header (Game Status)
         self.header_layout = QHBoxLayout()
@@ -44,10 +44,22 @@ class PlayTab(QWidget):
         self.scroll_area.setWidget(self.version_list_widget)
         self.main_layout.addWidget(self.scroll_area, 1) # Expandir
 
-        # 3. Opciones de Lanzamiento
+        # 3. Opciones de Lanzamiento — card con bordes
+        self.opts_card = QFrame()
+        self.opts_card.setObjectName("ToolCard")
+        opts_card_layout = QVBoxLayout(self.opts_card)
+        opts_card_layout.setContentsMargins(12, 10, 12, 10)
+        opts_card_layout.setSpacing(8)
+
+        lbl_opts_title = QLabel(c.t("UI_LAUNCH_OPTIONS"))
+        lbl_opts_title.setObjectName("HeaderLabel")
+        lbl_opts_title.setAlignment(Qt.AlignCenter)
+        opts_card_layout.addWidget(lbl_opts_title)
+
         self.opts_layout = QHBoxLayout()
         self.opts_layout.setAlignment(Qt.AlignCenter)
-        self.main_layout.addLayout(self.opts_layout)
+        self.opts_layout.setSpacing(10)
+        opts_card_layout.addLayout(self.opts_layout)
 
         self.combo_launch_action = QComboBox()
         self.combo_launch_action.addItem(c.t("UI_LAUNCH_ACTION_CLOSE"), c.LAUNCH_ACTION_CLOSE)
@@ -82,13 +94,22 @@ class PlayTab(QWidget):
         else:
             self.check_debug_log = None
 
+        self.main_layout.addWidget(self.opts_card)
 
-        # 4. Botón Jugar (full-width)
+        # 4. Botón Jugar — card envuelto
+        self.play_card = QFrame()
+        self.play_card.setObjectName("ToolCard")
+        play_card_layout = QVBoxLayout(self.play_card)
+        play_card_layout.setContentsMargins(12, 10, 12, 10)
+        play_card_layout.setSpacing(0)
+
         self.btn_launch = QPushButton(c.t("UI_BUTTON_PLAY_NOW"))
         self.btn_launch.setObjectName("PlayButton")
-        self.btn_launch.setFixedHeight(42)
+        self.btn_launch.setFixedHeight(44)
         self.btn_launch.clicked.connect(lambda: self.app.logic.launch_game(self.app))
-        self.main_layout.addWidget(self.btn_launch)
+        play_card_layout.addWidget(self.btn_launch)
+
+        self.main_layout.addWidget(self.play_card)
 
         # Mock version_var for compatibility
         self._selected_version = ""

@@ -614,11 +614,11 @@ class GenovaLauncherApp(QMainWindow):
             QPushButton#PlayButton {{
                 background-color: {play_accent};
                 color: #FFFFFF;
-                font-size: 13px;
+                font-size: 15px;
                 font-weight: 700;
                 padding: 10px 24px;
                 border: none;
-                min-height: 34px;
+                min-height: 36px;
             }}
             QPushButton#PlayButton:hover {{
                 background-color: {adjust_color(play_accent, 8)};
@@ -741,12 +741,13 @@ class GenovaLauncherApp(QMainWindow):
 
             /* ── Cards & Frames ── */
             QFrame#ToolCard {{
-                border: 1px solid {hex_to_rgba(input_border, 0.15)};
-                border-radius: 6px;
-                background-color: {hex_to_rgba(frame_bg_base, 0.08)};
+                border: 1px solid {hex_to_rgba(input_border, 0.18)};
+                border-radius: 8px;
+                background-color: {hex_to_rgba(frame_bg_base, 0.10)};
+                padding: 4px;
             }}
             QFrame#ToolCard:hover {{
-                border: 1px solid {hex_to_rgba(accent, 0.25)};
+                border: 1px solid {hex_to_rgba(accent, 0.30)};
             }}
             QFrame#GroupFrame, QFrame#VersionCard {{
                 border: 1px solid {hex_to_rgba(input_border, 0.08)};
@@ -1068,7 +1069,7 @@ class GenovaLauncherApp(QMainWindow):
         # Drop shadow for card frames
         shadow_color = QColor(0, 0, 0, 30) if mode == "Dark" else QColor(0, 0, 0, 15)
         for frame in self.findChildren(QFrame):
-            if frame.objectName() in ("GroupFrame", "ToolCard", "VersionCard"):
+            if frame.objectName() in ("GroupFrame", "ToolCard", "VersionCard", "PlayCard"):
                 existing = frame.graphicsEffect()
                 if existing is None:
                     shadow = QGraphicsDropShadowEffect()
