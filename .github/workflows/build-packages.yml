@@ -58,6 +58,9 @@ jobs:
         run: |
           curl -sL "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" -o /tmp/appimagetool
           chmod +x /tmp/appimagetool
+          # Extract appimagetool (CI has no FUSE, so we extract the AppImage)
+          /tmp/appimagetool --appimage-extract
+          mv squashfs-root /tmp/appimagetool-extracted
 
       - name: Read version from constants
         id: ver
@@ -201,7 +204,7 @@ jobs:
           HEREDOC
 
           cp icon.png "$APPDIR/genovalauncher.png"
-          /tmp/appimagetool --comp gzip "$APPDIR" "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
+          /tmp/appimagetool-extracted/AppRun --comp gzip "$APPDIR" "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
           chmod +x "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
           ls -lh "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
 
