@@ -1,7 +1,7 @@
-# GenovaLauncher — Unified Build & Release
+# GenovaLauncher — Build & Release
 #
-# On push to main: builds + uploads artifacts (no release)
-# On tag v* push:  builds + creates GitHub Release with all packages
+# On push to main:  builds all packages, uploads artifacts
+# On tag v* push:   builds, uploads artifacts, then publishes a GitHub Release
 
 name: Build & Release
 
@@ -14,7 +14,7 @@ on:
       version:
         description: "Version to release (e.g. v1.3.2)"
         required: true
-        default:  "v1.3.2"
+        default: "v1.3.2"
   push:
     branches: [main]
     tags:
@@ -31,8 +31,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    env:
-      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
 
     steps:
       - name: Checkout repository
@@ -73,18 +73,13 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Found version: $VERSION"
 
-      # ═══════════════════════════════════════════
-      #  Packages
-      # ═══════════════════════════════════════════
-
       - name: Package .tar.gz
         run: |
           VERSION="${{ steps.ver.outputs.version }}"
-          mkdir -p packages/dist
-          cp -a dist/GenovaLauncherMCPE "packages/dist/GenovaLauncherMCPE"
+          mkdir -p packages
+          cp -a dist/GenovaLauncherMCPE "packages/GenovaLauncher-${VERSION}"
           cd packages
-          tar -czf "GenovaLauncher-${VERSION}.tar.gz" "dist/GenovaLauncherMCPE"
-          rm -rf dist
+          tar -czf "GenovaLauncher-${VERSION}.tar.gz" "GenovaLauncher-${VERSION}"
           cd ..
           ls -lh "packages/GenovaLauncher-${VERSION}.tar.gz"
 
@@ -108,7 +103,6 @@ jobs:
           exec /usr/share/genovalauncher/GenovaLauncherMCPE "$@"
           HEREDOC
           chmod 755 "$DEB_BASE/usr/bin/genovalauncher"
-
           cp -a "$DIST"/* "$DEB_BASE/usr/share/genovalauncher/"
 
           cat > "$DEB_BASE/usr/share/applications/genovalauncher.desktop" << HEREDOC
@@ -121,7 +115,6 @@ jobs:
           Type=Application
           Categories=Game;
           HEREDOC
-
           cp icon.png "$DEB_BASE/usr/share/icons/hicolor/256x256/apps/genovalauncher.png"
 
           cat > "$DEB_BASE/DEBIAN/control" << HEREDOC
@@ -172,7 +165,6 @@ jobs:
           exec /usr/share/genovalauncher/GenovaLauncherMCPE "$@"
           HEREDOC
           chmod 755 "$XBPS_BASE/usr/bin/genovalauncher"
-
           cp -a "$DIST"/* "$XBPS_BASE/usr/share/genovalauncher/"
 
           cat > "$XBPS_BASE/usr/share/applications/genovalauncher.desktop" << HEREDOC
@@ -207,7 +199,6 @@ jobs:
           exec "${APPDIR}/share/GenovaLauncherMCPE" "$@"
           HEREDOC
           chmod 755 "$APPDIR/AppRun"
-
           cp -a "$DIST" "$APPDIR/share/GenovaLauncherMCPE"
 
           cat > "$APPDIR/genovalauncher.desktop" << HEREDOC
@@ -227,25 +218,37 @@ jobs:
           chmod +x "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
           ls -lh "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
 
-      # ═══════════════════════════════════════════
-      #  Upload: artifacts on push, release on tag
-      # ═══════════════════════════════════════════
-
-      - name: Upload artifacts (all)
+      - name: Upload all packages as artifact
         uses: actions/upload-artifact@v4
         with:
           name: genova-launcher-packages
-          path: packages/*
+          path: packages/*.{tar.gz,deb,xbps,AppImage}
           if-no-files-found: error
           retention-days: 30
 
-      - name: Create Release (tag only)
-        if: startsWith(github.ref, 'refs/tags/v')
+  publish:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download packages artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: genova-launcher-packages
+          path: packages
+
+      - name: List downloaded packages
+        run: ls -lh packages/
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: GenovaLauncher ${{ github.ref_name }}
-          fail_on_unmatched_files: false
+          fail_on_unmatched_files: true
           overwrite: true
           files: |
             packages/GenovaLauncher-*.tar.gz
