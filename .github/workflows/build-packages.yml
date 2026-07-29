@@ -222,7 +222,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: genova-launcher-packages
-          path: packages/*.{tar.gz,deb,xbps,AppImage}
+          path: |
+            packages/*.tar.gz
+            packages/*.deb
+            packages/*.xbps
+            packages/*.AppImage
           if-no-files-found: error
           retention-days: 30
 
