@@ -80,11 +80,13 @@ jobs:
       - name: Package .tar.gz
         run: |
           VERSION="${{ steps.ver.outputs.version }}"
-          DIR="GenovaLauncher-${VERSION}"
-          mv dist/GenovaLauncherMCPE "$DIR"
-          tar -czf "packages/${DIR}.tar.gz" "$DIR"
-          mv "$DIR" dist/GenovaLauncherMCPE
-          ls -lh "packages/${DIR}.tar.gz"
+          mkdir -p packages/dist
+          cp -a dist/GenovaLauncherMCPE "packages/dist/GenovaLauncherMCPE"
+          cd packages
+          tar -czf "GenovaLauncher-${VERSION}.tar.gz" "dist/GenovaLauncherMCPE"
+          rm -rf dist
+          cd ..
+          ls -lh "packages/GenovaLauncher-${VERSION}.tar.gz"
 
       - name: Package .deb
         run: |
