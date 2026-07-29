@@ -856,6 +856,12 @@ def launch_game(app):
     _ensure_credential_helper(app)
 
     env = os.environ.copy()
+    # Controller support via SDL gamepad mappings
+    if app.config.get("controller_enabled", False):
+        gamepad_db = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__)))), "gamecontrollerdb.txt")
+        if os.path.isfile(gamepad_db):
+            env["SDL_GAMECONTROLLERCONFIG"] = open(gamepad_db).read()
     if app.running_in_flatpak:
         # Prepend writable bin dir to PATH so mcpelauncher-client can find
         # the credential helper (mcpelauncher-ui-qt) written there by
