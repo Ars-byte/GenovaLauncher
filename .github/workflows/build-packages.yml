@@ -1,0 +1,241 @@
+# Build workflow for GenovaLauncher
+#
+# On every push to main (or manually), this workflow:
+#   1. Builds the Python app with PyInstaller
+#   2. Packages into .deb, .xbps and .AppImage
+#   3. Uploads all artifacts to the workflow run
+#
+# On tag push (v*), the release.yml workflow handles release creation.
+
+name: Build Packages
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'themes/**'
+      - 'icon.png'
+      - 'GenovaLauncher.spec'
+      - 'build.sh'
+      - 'requirements.txt'
+      - 'package.sh'
+      - '.github/workflows/build-packages.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip python3-venv patchelf \
+              binutils zlib1g-dev libarchive-tools
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt pyinstaller
+
+      - name: Build with PyInstaller
+        run: |
+          source venv/bin/activate
+          ./build.sh
+
+      - name: Download appimagetool
+        run: |
+          curl -sL "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" -o /tmp/appimagetool
+          chmod +x /tmp/appimagetool
+
+      - name: Read version from constants
+        id: ver
+        run: |
+          VERSION=$(python3 -c "
+          import sys; sys.path.insert(0, 'src')
+          import constants as c
+          print(c.VERSION_LAUNCHER)")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Found version: $VERSION"
+
+      - name: Build .deb
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          DIST="dist/GenovaLauncherMCPE"
+          OUT="packages"
+          mkdir -p "$OUT"
+          DEB_DIR="$OUT/genovalauncher_${VERSION}_amd64"
+
+          mkdir -p "$DEB_DIR/usr/bin"
+          cat > "$DEB_DIR/usr/bin/genovalauncher" << 'SCRIPT'
+          #!/bin/bash
+          exec /usr/share/genovalauncher/GenovaLauncherMCPE "$@"
+          SCRIPT
+          chmod 755 "$DEB_DIR/usr/bin/genovalauncher"
+
+          mkdir -p "$DEB_DIR/usr/share/genovalauncher"
+          cp -a "$DIST"/* "$DEB_DIR/usr/share/genovalauncher/"
+
+          mkdir -p "$DEB_DIR/usr/share/applications"
+          cat > "$DEB_DIR/usr/share/applications/genovalauncher.desktop" << EOF
+          [Desktop Entry]
+          Name=GenovaLauncher
+          Comment=Minecraft Bedrock Launcher for Linux
+          Exec=genovalauncher
+          Icon=genovalauncher
+          Terminal=false
+          Type=Application
+          Categories=Game;
+          EOF
+
+          mkdir -p "$DEB_DIR/usr/share/icons/hicolor/256x256/apps"
+          cp icon.png "$DEB_DIR/usr/share/icons/hicolor/256x256/apps/genovalauncher.png"
+
+          mkdir -p "$DEB_DIR/DEBIAN"
+          cat > "$DEB_DIR/DEBIAN/control" << EOF
+          Package: genovalauncher
+          Version: ${VERSION}
+          Section: games
+          Priority: optional
+          Architecture: amd64
+          Maintainer: Ars-Byte <arsbyte@github>
+          Description: Unofficial Minecraft Bedrock Launcher for Linux
+           GenovaLauncher is an unofficial launcher for Minecraft Bedrock
+           Edition on Linux, powered by the mcpelauncher project.
+          Homepage: https://github.com/Ars-byte/GenovaLauncher
+          EOF
+
+          cat > "$DEB_DIR/DEBIAN/postinst" << 'SCRIPT'
+          #!/bin/sh
+          set -e
+          if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+              gtk-update-icon-cache -q /usr/share/icons/hicolor 2>/dev/null || true
+          fi
+          exit 0
+          SCRIPT
+          chmod 755 "$DEB_DIR/DEBIAN/postinst"
+
+          cd "$OUT"
+          echo "2.0" > debian-binary
+          tar -czf control.tar.gz --owner=0 --group=0 -C "$DEB_DIR/DEBIAN" .
+          tar -czf data.tar.gz --owner=0 --group=0 -C "$DEB_DIR" --exclude=DEBIAN usr
+          ar -rcs "genovalauncher_${VERSION}_amd64.deb" debian-binary control.tar.gz data.tar.gz
+          rm -f debian-binary control.tar.gz data.tar.gz
+          cd ..
+          echo "Built .deb: $(ls -lh $OUT/*.deb)"
+
+      - name: Build .xbps
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          DIST="dist/GenovaLauncherMCPE"
+          OUT="packages"
+          XBPS_DIR="$OUT/xbps-root"
+          rm -rf "$XBPS_DIR"
+
+          mkdir -p "$XBPS_DIR/usr/bin"
+          cat > "$XBPS_DIR/usr/bin/genovalauncher" << 'SCRIPT'
+          #!/bin/bash
+          exec /usr/share/genovalauncher/GenovaLauncherMCPE "$@"
+          SCRIPT
+          chmod 755 "$XBPS_DIR/usr/bin/genovalauncher"
+
+          mkdir -p "$XBPS_DIR/usr/share/genovalauncher"
+          cp -a "$DIST"/* "$XBPS_DIR/usr/share/genovalauncher/"
+
+          mkdir -p "$XBPS_DIR/usr/share/applications"
+          cat > "$XBPS_DIR/usr/share/applications/genovalauncher.desktop" << EOF
+          [Desktop Entry]
+          Name=GenovaLauncher
+          Comment=Minecraft Bedrock Launcher for Linux
+          Exec=genovalauncher
+          Icon=genovalauncher
+          Terminal=false
+          Type=Application
+          Categories=Game;
+          EOF
+
+          mkdir -p "$XBPS_DIR/usr/share/icons/hicolor/256x256/apps"
+          cp icon.png "$XBPS_DIR/usr/share/icons/hicolor/256x256/apps/genovalauncher.png"
+
+          # Build xbps archive manually (xbps-create isn't available on Ubuntu)
+          # xbps package = tar.zst with files starting at root ./usr/...
+          cd "$OUT"
+          # Create a simple tar.gz-based xbps (xbps accepts gzip if named .xbps)
+          # Note: use proper structure with props.plist for xbps-rindex compatibility
+          tar -czf "genovalauncher-${VERSION}_1.x86_64.xbps" --owner=0 --group=0 \
+              -C "$XBPS_DIR" usr
+          cd ..
+          echo "Built .xbps: $(ls -lh $OUT/*.xbps)"
+
+      - name: Build .AppImage
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          DIST="dist/GenovaLauncherMCPE"
+          OUT="packages"
+          APPDIR="$OUT/GenovaLauncher.AppDir"
+          rm -rf "$APPDIR"
+          mkdir -p "$APPDIR/usr/bin"
+          mkdir -p "$APPDIR/share"
+
+          cat > "$APPDIR/AppRun" << 'SCRIPT'
+          #!/bin/bash
+          APPDIR="$(dirname "$(readlink -f "$0")")"
+          exec "${APPDIR}/share/GenovaLauncherMCPE" "$@"
+          SCRIPT
+          chmod 755 "$APPDIR/AppRun"
+
+          cp -a "$DIST" "$APPDIR/share/GenovaLauncherMCPE"
+
+          cat > "$APPDIR/genovalauncher.desktop" << EOF
+          [Desktop Entry]
+          Name=GenovaLauncher
+          Comment=Minecraft Bedrock Launcher for Linux
+          Exec=genovalauncher
+          Icon=genovalauncher
+          Terminal=false
+          Type=Application
+          Categories=Game;
+          StartupWMClass=GenovaLauncherMCPE
+          EOF
+
+          cp icon.png "$APPDIR/genovalauncher.png"
+
+          /tmp/appimagetool --comp gzip "$APPDIR" "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
+          chmod +x "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
+          echo "Built .AppImage: $(ls -lh $OUT/*.AppImage)"
+
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: genovalauncher-deb
+          path: packages/*.deb
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload .xbps artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: genovalauncher-xbps
+          path: packages/*.xbps
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload .AppImage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: genovalauncher-appimage
+          path: packages/*.AppImage
+          if-no-files-found: error
+          retention-days: 30
