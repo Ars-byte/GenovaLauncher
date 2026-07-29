@@ -63,10 +63,7 @@ jobs:
       - name: Read version from constants
         id: ver
         run: |
-          VERSION=$(python3 -c "
-          import sys; sys.path.insert(0, 'src')
-          import constants as c
-          print(c.VERSION_LAUNCHER)")
+          VERSION=$(grep -E '^VERSION_LAUNCHER' src/constants.py | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Found version: $VERSION"
 
