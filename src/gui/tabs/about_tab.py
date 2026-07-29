@@ -12,40 +12,57 @@ class AboutTab(QWidget):
 
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(8, 4, 8, 4)
+        self.main_layout.setSpacing(8)
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setFrameShape(QFrame.NoFrame)
-        scroll.setObjectName("GroupFrame")
+        scroll.setStyleSheet("border: none; background: transparent;")
         content = QWidget()
         layout = QVBoxLayout(content)
+        layout.setSpacing(12)
+        layout.setAlignment(Qt.AlignTop)
 
-        # Title
-        layout.addWidget(QLabel(c.APP_NAME, objectName="HeaderLabel"))
-
-        # Description
+        # Title card
+        title_card = self._make_card()
+        title_card.layout().addWidget(QLabel(c.APP_NAME, objectName="HeaderLabel"))
         desc = QLabel(c.t("UI_ABOUT_DESCRIPTION"))
         desc.setWordWrap(True)
         desc.setObjectName("SubtitleLabel")
-        layout.addWidget(desc)
+        title_card.layout().addWidget(desc)
+        layout.addWidget(title_card)
 
-        # System info
+        # System info card
+        sys_card = self._make_card()
+        sys_lbl = QLabel("System Information", objectName="HeaderLabel")
+        sys_card.layout().addWidget(sys_lbl)
         info = QLabel(self._sys_info())
         info.setWordWrap(True)
         info.setObjectName("SubtitleLabel")
         info.setStyleSheet("color: #888; font-family: monospace; font-size: 11px;")
-        layout.addWidget(info)
+        sys_card.layout().addWidget(info)
+        layout.addWidget(sys_card)
 
         layout.addStretch(1)
 
-        # Credits
-        layout.addWidget(QLabel(c.t("UI_ABOUT_CREDITS"), objectName="SubtitleLabel",
-                                alignment=Qt.AlignCenter))
-        layout.addWidget(QLabel(f"{c.t('UI_VERSION_TEXT')}{c.VERSION_LAUNCHER}",
-                                objectName="SubtitleLabel", alignment=Qt.AlignCenter))
+        # Credits card
+        credit_card = self._make_card()
+        credit_card.layout().addWidget(QLabel(c.t("UI_ABOUT_CREDITS"), objectName="SubtitleLabel",
+                                              alignment=Qt.AlignCenter))
+        credit_card.layout().addWidget(QLabel(f"{c.t('UI_VERSION_TEXT')}{c.VERSION_LAUNCHER}",
+                                              objectName="SubtitleLabel", alignment=Qt.AlignCenter))
+        layout.addWidget(credit_card)
 
         scroll.setWidget(content)
         self.main_layout.addWidget(scroll)
+
+    def _make_card(self):
+        card = QFrame()
+        card.setObjectName("ToolCard")
+        lay = QVBoxLayout(card)
+        lay.setContentsMargins(14, 12, 14, 12)
+        lay.setSpacing(6)
+        return card
 
     def _sys_info(self):
         try:

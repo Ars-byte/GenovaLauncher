@@ -12,7 +12,7 @@ class PlayTab(QWidget):
         # Layout principal
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(8, 4, 8, 8)
-        self.main_layout.setSpacing(6)
+        self.main_layout.setSpacing(8)
 
         # 1. Header (Game Status)
         self.header_layout = QHBoxLayout()

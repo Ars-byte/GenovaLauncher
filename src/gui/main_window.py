@@ -592,6 +592,7 @@ class GenovaLauncherApp(QMainWindow):
                 background-color: {accent};
                 color: #FFFFFF;
                 border: none;
+                border-radius: 6px;
                 padding: 6px 14px;
                 font-size: 12px;
                 font-weight: 500;
@@ -618,10 +619,14 @@ class GenovaLauncherApp(QMainWindow):
                 font-weight: 700;
                 padding: 10px 24px;
                 border: none;
+                border-radius: 8px;
                 min-height: 36px;
             }}
             QPushButton#PlayButton:hover {{
-                background-color: {adjust_color(play_accent, 8)};
+                background-color: {adjust_color(play_accent, 10)};
+            }}
+            QPushButton#PlayButton:pressed {{
+                background-color: {adjust_color(play_accent, -6)};
             }}
             QPushButton#SaveButton, QPushButton#ActionButton {{
                 background-color: {accent};
@@ -630,10 +635,14 @@ class GenovaLauncherApp(QMainWindow):
                 font-weight: 600;
                 padding: 8px 20px;
                 border: none;
+                border-radius: 6px;
                 min-height: 28px;
             }}
             QPushButton#SaveButton:hover, QPushButton#ActionButton:hover {{
                 background-color: {adjust_color(accent, 8)};
+            }}
+            QPushButton#SaveButton:pressed, QPushButton#ActionButton:pressed {{
+                background-color: {adjust_color(accent, -6)};
             }}
             QPushButton#ToolButton {{
                 background-color: {tools_accent};
@@ -691,6 +700,7 @@ class GenovaLauncherApp(QMainWindow):
                 background-color: {input_bg};
                 color: {input_text};
                 border: 1px solid {hex_to_rgba(input_border, 0.3)};
+                border-radius: 6px;
                 padding: 5px 8px;
                 font-size: 12px;
                 selection-background-color: {accent};
@@ -713,6 +723,7 @@ class GenovaLauncherApp(QMainWindow):
                 background-color: {input_bg};
                 color: {input_text};
                 border: 1px solid {hex_to_rgba(input_border, 0.3)};
+                border-radius: 6px;
                 selection-background-color: {accent};
                 selection-color: #FFFFFF;
                 padding: 1px;
