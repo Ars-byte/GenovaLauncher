@@ -79,13 +79,6 @@ class PlayTab(QWidget):
         self.check_gamemode.stateChanged.connect(lambda state: self.app.sync_gamemode_ui(state == Qt.Checked.value))
         self.opts_layout.addWidget(self.check_gamemode)
 
-        self.check_controller = QCheckBox("Controller")
-        self.check_controller.setChecked(self.app.config.get("controller_enabled", False))
-        self.check_controller.stateChanged.connect(
-            lambda state: self.app.config_manager.set("controller_enabled", state == Qt.Checked.value)
-        )
-        self.opts_layout.addWidget(self.check_controller)
-
         if not self.app.running_in_flatpak:
             self.check_debug_log = QCheckBox(c.t("UI_CHECKBOX_DEBUG_LOG"))
             self.check_debug_log.setChecked(self.app.config.get(c.CONFIG_KEY_DEBUG_LOG, False))

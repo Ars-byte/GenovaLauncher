@@ -61,7 +61,7 @@ import os
 
 # --- Información de la Aplicación ---
 APP_NAME = "GenovaLauncher"
-VERSION_LAUNCHER = "1.3.0"
+VERSION_LAUNCHER = "1.3.1"
 BINARY_VERSION_INFO = "v1.7.4-official"  # Default for Flatpak or if not found
 BINARY_VERSION_FALLBACK = "PreCompiled Binaries from mcpelauncher Github"
 DEVELOPERS = "Ars-Byte"

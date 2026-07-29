@@ -20,4 +20,4 @@ logs/
 *.flatpakrepo
 .flatpak-builder
 flatlibs/
-.github/
+# .github/ — workflows must be tracked for CI
