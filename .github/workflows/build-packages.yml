@@ -1,18 +1,20 @@
-# Build workflow for GenovaLauncher
+# GenovaLauncher — Unified Build & Release
 #
-# On every push to main (or manually), this workflow:
-#   1. Builds the Python app with PyInstaller
-#   2. Packages into .deb, .xbps and .AppImage
-#   3. Uploads artifacts
-#
-# On tag push (v*), the release.yml workflow handles release creation.
+# On push to main: builds + uploads artifacts (no release)
+# On tag v* push:  builds + creates GitHub Release with all packages
 
-name: Build Packages
+name: Build & Release
 
 permissions:
-  contents: read
+  contents: write
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g. v1.3.2)"
+        required: true
+        default: "v1.3.2"
   push:
     branches: [main]
     paths:
@@ -22,13 +24,17 @@ on:
       - 'GenovaLauncher.spec'
       - 'build.sh'
       - 'requirements.txt'
-      - 'package.sh'
       - '.github/workflows/build-packages.yml'
-  workflow_dispatch:
+  push_tags:
+    tags:
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-24.04
+    env:
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -58,7 +64,6 @@ jobs:
         run: |
           curl -sL "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" -o /tmp/appimagetool
           chmod +x /tmp/appimagetool
-          # Extract appimagetool (CI has no FUSE, so we extract the AppImage)
           /tmp/appimagetool --appimage-extract
           mv squashfs-root /tmp/appimagetool-extracted
 
@@ -68,6 +73,19 @@ jobs:
           VERSION=$(grep -E '^VERSION_LAUNCHER' src/constants.py | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Found version: $VERSION"
+
+      # ═══════════════════════════════════════════
+      #  Packages
+      # ═══════════════════════════════════════════
+
+      - name: Package .tar.gz
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          DIR="GenovaLauncher-${VERSION}"
+          mv dist/GenovaLauncherMCPE "$DIR"
+          tar -czf "packages/${DIR}.tar.gz" "$DIR"
+          mv "$DIR" dist/GenovaLauncherMCPE
+          ls -lh "packages/${DIR}.tar.gz"
 
       - name: Package .deb
         run: |
@@ -208,26 +226,28 @@ jobs:
           chmod +x "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
           ls -lh "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
 
-      - name: Upload .deb
+      # ═══════════════════════════════════════════
+      #  Upload: artifacts on push, release on tag
+      # ═══════════════════════════════════════════
+
+      - name: Upload artifacts (all)
         uses: actions/upload-artifact@v4
         with:
-          name: genovalauncher-deb
-          path: packages/*.deb
+          name: genova-launcher-packages
+          path: packages/*
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload .xbps
-        uses: actions/upload-artifact@v4
+      - name: Create Release (tag only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
         with:
-          name: genovalauncher-xbps
-          path: packages/*.xbps
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload .AppImage
-        uses: actions/upload-artifact@v4
-        with:
-          name: genovalauncher-appimage
-          path: packages/*.AppImage
-          if-no-files-found: error
-          retention-days: 30
+          tag_name: ${{ github.ref_name }}
+          name: GenovaLauncher ${{ github.ref_name }}
+          fail_on_unmatched_files: false
+          overwrite: true
+          files: |
+            packages/GenovaLauncher-*.tar.gz
+            packages/genovalauncher_*.deb
+            packages/genovalauncher-*.xbps
+            packages/GenovaLauncher-*.AppImage
