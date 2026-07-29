@@ -3,7 +3,7 @@
 # On every push to main (or manually), this workflow:
 #   1. Builds the Python app with PyInstaller
 #   2. Packages into .deb, .xbps and .AppImage
-#   3. Uploads all artifacts to the workflow run
+#   3. Uploads artifacts
 #
 # On tag push (v*), the release.yml workflow handles release creation.
 
@@ -36,8 +36,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip python3-venv patchelf \
-              binutils zlib1g-dev libarchive-tools
+          sudo apt-get install -y python3-pip python3-venv patchelf binutils
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -67,26 +66,30 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Found version: $VERSION"
 
-      - name: Build .deb
+      - name: Package .deb
         run: |
+          set -e
           VERSION="${{ steps.ver.outputs.version }}"
           DIST="dist/GenovaLauncherMCPE"
           OUT="packages"
           mkdir -p "$OUT"
-          DEB_DIR="$OUT/genovalauncher_${VERSION}_amd64"
+          DEB_BASE="$OUT/pkg-deb"
+          rm -rf "$DEB_BASE"
+          mkdir -p "$DEB_BASE/usr/bin"
+          mkdir -p "$DEB_BASE/usr/share/genovalauncher"
+          mkdir -p "$DEB_BASE/usr/share/applications"
+          mkdir -p "$DEB_BASE/usr/share/icons/hicolor/256x256/apps"
+          mkdir -p "$DEB_BASE/DEBIAN"
 
-          mkdir -p "$DEB_DIR/usr/bin"
-          cat > "$DEB_DIR/usr/bin/genovalauncher" << 'SCRIPT'
+          cat > "$DEB_BASE/usr/bin/genovalauncher" << 'HEREDOC'
           #!/bin/bash
           exec /usr/share/genovalauncher/GenovaLauncherMCPE "$@"
-          SCRIPT
-          chmod 755 "$DEB_DIR/usr/bin/genovalauncher"
+          HEREDOC
+          chmod 755 "$DEB_BASE/usr/bin/genovalauncher"
 
-          mkdir -p "$DEB_DIR/usr/share/genovalauncher"
-          cp -a "$DIST"/* "$DEB_DIR/usr/share/genovalauncher/"
+          cp -a "$DIST"/* "$DEB_BASE/usr/share/genovalauncher/"
 
-          mkdir -p "$DEB_DIR/usr/share/applications"
-          cat > "$DEB_DIR/usr/share/applications/genovalauncher.desktop" << EOF
+          cat > "$DEB_BASE/usr/share/applications/genovalauncher.desktop" << HEREDOC
           [Desktop Entry]
           Name=GenovaLauncher
           Comment=Minecraft Bedrock Launcher for Linux
@@ -95,13 +98,11 @@ jobs:
           Terminal=false
           Type=Application
           Categories=Game;
-          EOF
+          HEREDOC
 
-          mkdir -p "$DEB_DIR/usr/share/icons/hicolor/256x256/apps"
-          cp icon.png "$DEB_DIR/usr/share/icons/hicolor/256x256/apps/genovalauncher.png"
+          cp icon.png "$DEB_BASE/usr/share/icons/hicolor/256x256/apps/genovalauncher.png"
 
-          mkdir -p "$DEB_DIR/DEBIAN"
-          cat > "$DEB_DIR/DEBIAN/control" << EOF
+          cat > "$DEB_BASE/DEBIAN/control" << HEREDOC
           Package: genovalauncher
           Version: ${VERSION}
           Section: games
@@ -112,47 +113,47 @@ jobs:
            GenovaLauncher is an unofficial launcher for Minecraft Bedrock
            Edition on Linux, powered by the mcpelauncher project.
           Homepage: https://github.com/Ars-byte/GenovaLauncher
-          EOF
+          HEREDOC
 
-          cat > "$DEB_DIR/DEBIAN/postinst" << 'SCRIPT'
+          cat > "$DEB_BASE/DEBIAN/postinst" << 'HEREDOC'
           #!/bin/sh
           set -e
           if command -v gtk-update-icon-cache >/dev/null 2>&1; then
               gtk-update-icon-cache -q /usr/share/icons/hicolor 2>/dev/null || true
           fi
-          exit 0
-          SCRIPT
-          chmod 755 "$DEB_DIR/DEBIAN/postinst"
+          HEREDOC
+          chmod 755 "$DEB_BASE/DEBIAN/postinst"
 
-          cd "$OUT"
-          echo "2.0" > debian-binary
-          tar -czf control.tar.gz --owner=0 --group=0 -C "$DEB_DIR/DEBIAN" .
-          tar -czf data.tar.gz --owner=0 --group=0 -C "$DEB_DIR" --exclude=DEBIAN usr
-          ar -rcs "genovalauncher_${VERSION}_amd64.deb" debian-binary control.tar.gz data.tar.gz
-          rm -f debian-binary control.tar.gz data.tar.gz
-          cd ..
-          echo "Built .deb: $(ls -lh $OUT/*.deb)"
+          echo "2.0" > "$OUT/debian-binary"
+          tar -czf "$OUT/control.tar.gz" --owner=0 --group=0 -C "$DEB_BASE" DEBIAN
+          tar -czf "$OUT/data.tar.gz" --owner=0 --group=0 -C "$DEB_BASE" usr
+          ar -rcs "$OUT/genovalauncher_${VERSION}_amd64.deb" "$OUT/debian-binary" "$OUT/control.tar.gz" "$OUT/data.tar.gz"
+          rm -f "$OUT/debian-binary" "$OUT/control.tar.gz" "$OUT/data.tar.gz"
+          ls -lh "$OUT/genovalauncher_${VERSION}_amd64.deb"
 
-      - name: Build .xbps
+      - name: Package .xbps
         run: |
+          set -e
           VERSION="${{ steps.ver.outputs.version }}"
           DIST="dist/GenovaLauncherMCPE"
           OUT="packages"
-          XBPS_DIR="$OUT/xbps-root"
-          rm -rf "$XBPS_DIR"
+          mkdir -p "$OUT"
+          XBPS_BASE="$OUT/xbps-pkg"
+          rm -rf "$XBPS_BASE"
+          mkdir -p "$XBPS_BASE/usr/bin"
+          mkdir -p "$XBPS_BASE/usr/share/genovalauncher"
+          mkdir -p "$XBPS_BASE/usr/share/applications"
+          mkdir -p "$XBPS_BASE/usr/share/icons/hicolor/256x256/apps"
 
-          mkdir -p "$XBPS_DIR/usr/bin"
-          cat > "$XBPS_DIR/usr/bin/genovalauncher" << 'SCRIPT'
+          cat > "$XBPS_BASE/usr/bin/genovalauncher" << 'HEREDOC'
           #!/bin/bash
           exec /usr/share/genovalauncher/GenovaLauncherMCPE "$@"
-          SCRIPT
-          chmod 755 "$XBPS_DIR/usr/bin/genovalauncher"
+          HEREDOC
+          chmod 755 "$XBPS_BASE/usr/bin/genovalauncher"
 
-          mkdir -p "$XBPS_DIR/usr/share/genovalauncher"
-          cp -a "$DIST"/* "$XBPS_DIR/usr/share/genovalauncher/"
+          cp -a "$DIST"/* "$XBPS_BASE/usr/share/genovalauncher/"
 
-          mkdir -p "$XBPS_DIR/usr/share/applications"
-          cat > "$XBPS_DIR/usr/share/applications/genovalauncher.desktop" << EOF
+          cat > "$XBPS_BASE/usr/share/applications/genovalauncher.desktop" << HEREDOC
           [Desktop Entry]
           Name=GenovaLauncher
           Comment=Minecraft Bedrock Launcher for Linux
@@ -161,41 +162,33 @@ jobs:
           Terminal=false
           Type=Application
           Categories=Game;
-          EOF
+          HEREDOC
+          cp icon.png "$XBPS_BASE/usr/share/icons/hicolor/256x256/apps/genovalauncher.png"
 
-          mkdir -p "$XBPS_DIR/usr/share/icons/hicolor/256x256/apps"
-          cp icon.png "$XBPS_DIR/usr/share/icons/hicolor/256x256/apps/genovalauncher.png"
+          tar -czf "$OUT/genovalauncher-${VERSION}_1.x86_64.xbps" --owner=0 --group=0 -C "$XBPS_BASE" usr
+          ls -lh "$OUT/genovalauncher-${VERSION}_1.x86_64.xbps"
 
-          # Build xbps archive manually (xbps-create isn't available on Ubuntu)
-          # xbps package = tar.zst with files starting at root ./usr/...
-          cd "$OUT"
-          # Create a simple tar.gz-based xbps (xbps accepts gzip if named .xbps)
-          # Note: use proper structure with props.plist for xbps-rindex compatibility
-          tar -czf "genovalauncher-${VERSION}_1.x86_64.xbps" --owner=0 --group=0 \
-              -C "$XBPS_DIR" usr
-          cd ..
-          echo "Built .xbps: $(ls -lh $OUT/*.xbps)"
-
-      - name: Build .AppImage
+      - name: Package .AppImage
         run: |
+          set -e
           VERSION="${{ steps.ver.outputs.version }}"
           DIST="dist/GenovaLauncherMCPE"
           OUT="packages"
-          APPDIR="$OUT/GenovaLauncher.AppDir"
+          mkdir -p "$OUT"
+          APPDIR="$OUT/AppDir"
           rm -rf "$APPDIR"
-          mkdir -p "$APPDIR/usr/bin"
           mkdir -p "$APPDIR/share"
 
-          cat > "$APPDIR/AppRun" << 'SCRIPT'
+          cat > "$APPDIR/AppRun" << 'HEREDOC'
           #!/bin/bash
           APPDIR="$(dirname "$(readlink -f "$0")")"
           exec "${APPDIR}/share/GenovaLauncherMCPE" "$@"
-          SCRIPT
+          HEREDOC
           chmod 755 "$APPDIR/AppRun"
 
           cp -a "$DIST" "$APPDIR/share/GenovaLauncherMCPE"
 
-          cat > "$APPDIR/genovalauncher.desktop" << EOF
+          cat > "$APPDIR/genovalauncher.desktop" << HEREDOC
           [Desktop Entry]
           Name=GenovaLauncher
           Comment=Minecraft Bedrock Launcher for Linux
@@ -205,15 +198,14 @@ jobs:
           Type=Application
           Categories=Game;
           StartupWMClass=GenovaLauncherMCPE
-          EOF
+          HEREDOC
 
           cp icon.png "$APPDIR/genovalauncher.png"
-
           /tmp/appimagetool --comp gzip "$APPDIR" "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
           chmod +x "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
-          echo "Built .AppImage: $(ls -lh $OUT/*.AppImage)"
+          ls -lh "$OUT/GenovaLauncher-${VERSION}-x86_64.AppImage"
 
-      - name: Upload .deb artifact
+      - name: Upload .deb
         uses: actions/upload-artifact@v4
         with:
           name: genovalauncher-deb
@@ -221,7 +213,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload .xbps artifact
+      - name: Upload .xbps
         uses: actions/upload-artifact@v4
         with:
           name: genovalauncher-xbps
@@ -229,7 +221,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload .AppImage artifact
+      - name: Upload .AppImage
         uses: actions/upload-artifact@v4
         with:
           name: genovalauncher-appimage
