@@ -14,9 +14,11 @@ on:
       version:
         description: "Version to release (e.g. v1.3.2)"
         required: true
-        default: "v1.3.2"
+        default:  "v1.3.2"
   push:
     branches: [main]
+    tags:
+      - 'v*'
     paths:
       - 'src/**'
       - 'themes/**'
@@ -25,9 +27,6 @@ on:
       - 'build.sh'
       - 'requirements.txt'
       - '.github/workflows/build-packages.yml'
-  push_tags:
-    tags:
-      - 'v*'
 
 jobs:
   build:
